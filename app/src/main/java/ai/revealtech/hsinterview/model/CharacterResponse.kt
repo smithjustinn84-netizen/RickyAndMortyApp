@@ -24,7 +24,7 @@ data class CharacterResponse(
     @SerialName("image")
     var image: String? = null,
     @SerialName("episode")
-    var episode: ArrayList<String> = arrayListOf(),
+    var episode: List<String> = emptyList(),
     @SerialName("url")
     var url: String? = null,
     @SerialName("created")
@@ -64,5 +64,5 @@ data class CharactersResponse (
     @SerialName("info"    )
     var info    : Info?              = Info(),
     @SerialName("results" )
-    var results : ArrayList<CharacterResponse> = arrayListOf()
+    var results : List<CharacterResponse> = listOf()
 )

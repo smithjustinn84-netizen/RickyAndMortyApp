@@ -55,9 +55,11 @@ fun DetailScreen(
                     onBackClick = onBackClick
                 )
             }
+
             is DetailUiState.Error -> {
                 ErrorScreen(error = state.message)
             }
+
             DetailUiState.Loading -> {
                 LoadingScreen()
             }
@@ -163,6 +165,10 @@ fun MoreDetails(
             label = stringResource(R.string.origin),
             text = character.origin
         )
+        DetailText(
+            label = stringResource(R.string.episodes),
+            text = character.episode.size.toString()
+        )
     }
 }
 
@@ -181,12 +187,23 @@ fun DetailText(
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
-        Text(
+        DetailText(
             text = text,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
+}
+
+@Composable
+fun DetailText(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
 }
 
 @Composable

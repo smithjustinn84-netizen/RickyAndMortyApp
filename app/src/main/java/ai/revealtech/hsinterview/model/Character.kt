@@ -9,6 +9,7 @@ data class Character(
     val gender: String,
     val origin: String,
     val location: String,
+    val episode: List<String>,
     val image: String
 )
 
@@ -33,7 +34,8 @@ fun CharacterResponse.toCharacter(): Character {
         gender = gender ?: "",
         origin = origin?.name ?: "",
         location = location?.name ?: "",
-        image = image ?: ""
+        image = image ?: "",
+        episode = episode
     )
 }
 
@@ -62,7 +64,11 @@ val exampleCharacters = listOf(
         gender = "Male",
         origin = "Earth (C-137)",
         location = "Citadel of Ricks",
-        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        episode = listOf(
+            "https://rickandmortyapi.com/api/episode/1",
+            "https://rickandmortyapi.com/api/episode/2"
+        )
     ),
     Character(
         id = 2,
@@ -73,6 +79,10 @@ val exampleCharacters = listOf(
         origin = "unknown",
         location = "Citadel of Ricks",
         image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+        episode = listOf(
+            "https://rickandmortyapi.com/api/episode/1",
+            "https://rickandmortyapi.com/api/episode/2"
+        )
     ),
     Character(
         id = 3,
@@ -83,6 +93,10 @@ val exampleCharacters = listOf(
         origin = "Earth (Replacement Dimension)",
         location = "Earth (Replacement Dimension)",
         image = "https://rickandmortyapi.com/api/character/avatar/3.jpeg",
+        episode = listOf(
+            "https://rickandmortyapi.com/api/episode/1",
+            "https://rickandmortyapi.com/api/episode/2"
+        )
     ),
     Character(
         id = 4,
@@ -93,6 +107,10 @@ val exampleCharacters = listOf(
         origin = "Earth (Replacement Dimension)",
         location = "Earth (Replacement Dimension)",
         image = "https://rickandmortyapi.com/api/character/avatar/4.jpeg",
+        episode = listOf(
+            "https://rickandmortyapi.com/api/episode/1",
+            "https://rickandmortyapi.com/api/episode/2"
+        )
     ),
     Character(
         id = 5,
@@ -103,5 +121,10 @@ val exampleCharacters = listOf(
         origin = "Earth (Replacement Dimension)",
         location = "Earth (Replacement Dimension)",
         image = "https://rickandmortyapi.com/api/character/avatar/5.jpeg",
+        episode = listOf(
+            "https://rickandmortyapi.com/api/episode/1",
+            "https://rickandmortyapi.com/api/episode/2"
+        )
     )
 )
+

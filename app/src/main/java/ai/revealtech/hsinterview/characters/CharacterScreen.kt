@@ -1,8 +1,6 @@
 package ai.revealtech.hsinterview.characters
 
 import ai.revealtech.hsinterview.R
-import ai.revealtech.hsinterview.R.dimen.small_space
-import ai.revealtech.hsinterview.R.string.image_description
 import ai.revealtech.hsinterview.model.Character
 import ai.revealtech.hsinterview.model.exampleCharacters
 import ai.revealtech.hsinterview.ui.ErrorScreen
@@ -21,9 +19,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -31,7 +30,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,10 +40,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.LocalAsyncImagePreviewHandler
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun CharacterScreen(
@@ -54,26 +55,32 @@ fun CharacterScreen(
     onClick: (Int) -> Unit = {}
 ) {
     Scaffold { innerPadding ->
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        val lazyPagingItems = viewModel.pager.collectAsLazyPagingItems()
 
-        when (val state = uiState) {
-            is CharacterUiState.Success -> {
-                CharacterContent(
-                    characters = state.characters,
-                    modifier = modifier.padding(innerPadding),
-                    onClick = onClick
-                )
-            }
-            is CharacterUiState.Error -> {
-                ErrorScreen(error = state.message)
-            }
-            CharacterUiState.Loading -> {
-                Column(
-                    modifier = modifier.padding(innerPadding),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CharacterHeader()
+        CharacterContent(
+            characters = lazyPagingItems,
+            modifier = modifier.padding(innerPadding),
+            onClick = onClick
+        )
+
+        lazyPagingItems.loadState.apply {
+            when {
+                refresh is androidx.paging.LoadState.Loading -> {
                     LoadingScreen()
+                }
+
+                append is androidx.paging.LoadState.Loading -> {
+                    LoadingScreen()
+                }
+
+                refresh is androidx.paging.LoadState.Error -> {
+                    val error = (refresh as androidx.paging.LoadState.Error).error
+                    ErrorScreen(error = error.message ?: "Unknown error")
+                }
+
+                append is androidx.paging.LoadState.Error -> {
+                    val error = (append as androidx.paging.LoadState.Error).error
+                    ErrorScreen(error = error.message ?: "Unknown error")
                 }
             }
         }
@@ -82,7 +89,7 @@ fun CharacterScreen(
 
 @Composable
 private fun CharacterContent(
-    characters: List<Character>,
+    characters: LazyPagingItems<Character>,
     modifier: Modifier,
     onClick: (Int) -> Unit = {}
 ) {
@@ -92,11 +99,15 @@ private fun CharacterContent(
             stickyHeader {
                 CharacterHeader()
             }
-            items(characters) { character ->
-                CharacterRow(
-                    character = character,
-                    onClick = onClick
-                )
+            items(
+                count = characters.itemCount,
+            ) { index ->
+                characters[index]?.let {
+                    CharacterRow(
+                        character = it,
+                        onClick = onClick
+                    )
+                }
             }
         }
     }
@@ -125,10 +136,10 @@ fun CharacterRow(
             CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
                 AsyncImage(
                     model = character.image,
-                    contentDescription = stringResource(image_description, character),
+                    contentDescription = stringResource(R.string.image_description, character),
                 )
             }
-            Spacer(modifier = Modifier.width(dimensionResource(small_space)))
+            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.small_space)))
             CharacterSummary(character)
         }
     }
@@ -145,13 +156,38 @@ private fun CharacterSummary(
             style = MaterialTheme.typography.headlineMedium,
         )
         Row {
+            StatusIcon(character.status)
+            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.small_space)))
+            Text(text = "${character.status} - ${character.species}")
+        }
+    }
+}
+
+@Composable
+private fun StatusIcon(status: String) {
+    when (status) {
+        "Alive" -> {
             Image(
                 imageVector = Icons.Default.CheckCircle,
                 contentDescription = stringResource(R.string.alive),
                 colorFilter = ColorFilter.tint(Color.Green),
             )
-            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.small_space)))
-            Text(text = "${character.status} - ${character.species}")
+        }
+
+        "Dead" -> {
+            Image(
+                imageVector = Icons.Default.Warning,
+                contentDescription = stringResource(R.string.dead),
+                colorFilter = ColorFilter.tint(Color.Red),
+            )
+        }
+
+        else -> {
+            Image(
+                imageVector = Icons.Default.Info,
+                contentDescription = stringResource(R.string.unknown),
+                colorFilter = ColorFilter.tint(Color.Gray),
+            )
         }
     }
 }
@@ -186,10 +222,17 @@ fun LogoImage(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun CharacterContentPreview() {
+    // create list of fake data for preview
+    val fakeData = exampleCharacters
+    // create pagingData from a list of fake data
+    val pagingData = PagingData.from(fakeData)
+    // pass pagingData containing fake data to a MutableStateFlow
+    val fakeDataFlow = MutableStateFlow(pagingData)
+    // pass flow to composable
     HsInterviewTheme {
         Surface {
             CharacterContent(
-                characters = exampleCharacters,
+                characters = fakeDataFlow.collectAsLazyPagingItems(),
                 modifier = Modifier
             )
         }

@@ -11,4 +11,7 @@
     <string name="error">Error</string>
     <string name="alive">Alive</string>
     <string name="rick_and_morty_logo">Rick And Morty Logo</string>
+    <string name="dead">Dead</string>
+    <string name="unknown">Unknown</string>
+    <string name="episodes">Episodes</string>
 </resources>

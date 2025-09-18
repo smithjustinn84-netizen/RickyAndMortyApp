@@ -70,6 +70,16 @@ dependencies {
   implementation(libs.coil.network.ktor3)
   implementation(libs.ktor.client.android)
 
+  // Ktor
+  implementation(libs.ktor.client.core)
+  implementation(libs.ktor.client.content.negotiation)
+  implementation(libs.ktor.client.okhttp)
+  implementation(libs.ktor.serialization.kotlinx.json)
+
+  // Paging
+  implementation(libs.androidx.paging.runtime)
+  implementation(libs.androidx.paging.compose)
+
   testImplementation(libs.junit)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
