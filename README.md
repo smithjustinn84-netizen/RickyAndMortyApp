@@ -13,3 +13,7 @@ Once you have completed the project, please share the resulting project with us.
 
 Any needed documentation about the API that is to be used can be found here [https://rickandmortyapi.com/documentation](https://rickandmortyapi.com/documentation)
 
+## Screenshots
+
+![ListView](/Screenshots/list_view.png)
+![DetailView](/Screenshots/detail_view.png)
