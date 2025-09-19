@@ -1,8 +1,8 @@
 package ai.revealtech.hsinterview.characterdetail
 
 import ai.revealtech.hsinterview.R
-import ai.revealtech.hsinterview.model.Character
-import ai.revealtech.hsinterview.model.exampleCharacters
+import ai.revealtech.hsinterview.model.CharacterUi
+import ai.revealtech.hsinterview.model.exampleCharacterUis
 import ai.revealtech.hsinterview.ui.ErrorScreen
 import ai.revealtech.hsinterview.ui.LoadingScreen
 import ai.revealtech.hsinterview.ui.previewHandler
@@ -50,7 +50,7 @@ fun DetailScreen(
         when (val state = uiState) {
             is DetailUiState.Success -> {
                 DetailContent(
-                    character = state.data,
+                    character = state.character,
                     modifier = modifier.padding(innerPadding),
                     onBackClick = onBackClick
                 )
@@ -69,7 +69,7 @@ fun DetailScreen(
 
 @Composable
 fun DetailContent(
-    character: Character,
+    character: CharacterUi,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit
 ) {
@@ -88,7 +88,7 @@ fun DetailContent(
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun CharacterDetails(
-    character: Character,
+    character: CharacterUi,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -118,7 +118,7 @@ private fun CharacterDetails(
             )
         }
         MoreDetails(
-            character = character,
+            characterUi = character,
             modifier = Modifier.padding(dimensionResource(R.dimen.small_space))
         )
     }
@@ -126,7 +126,7 @@ private fun CharacterDetails(
 
 @Composable
 private fun Details(
-    character: Character,
+    character: CharacterUi,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -153,21 +153,21 @@ private fun Details(
 
 @Composable
 fun MoreDetails(
-    character: Character,
+    characterUi: CharacterUi,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
         DetailText(
             label = stringResource(R.string.location),
-            text = character.location
+            text = characterUi.location
         )
         DetailText(
             label = stringResource(R.string.origin),
-            text = character.origin
+            text = characterUi.origin
         )
         DetailText(
             label = stringResource(R.string.episodes),
-            text = character.episode.size.toString()
+            text = characterUi.episode.size.toString()
         )
     }
 }
@@ -240,7 +240,7 @@ fun DetailHeader(
 fun DetailScreenPreview() {
     HsInterviewTheme {
         Surface {
-            DetailContent(character = exampleCharacters[0], onBackClick = {})
+            DetailContent(character = exampleCharacterUis[0], onBackClick = {})
         }
     }
 }
@@ -260,7 +260,7 @@ fun DetailHeaderPreview() {
 fun CharacterDetailsPreview() {
     HsInterviewTheme {
         Surface {
-            CharacterDetails(character = exampleCharacters[0])
+            CharacterDetails(character = exampleCharacterUis[0])
         }
     }
 }

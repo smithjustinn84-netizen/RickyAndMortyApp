@@ -1,62 +1,7 @@
 package ai.revealtech.hsinterview.model
 
-
-data class Character(
-    val id: Int,
-    val name: String,
-    val status: String,
-    val species: String,
-    val gender: String,
-    val origin: String,
-    val location: String,
-    val episode: List<String>,
-    val image: String
-)
-
-data class CharacterPage(
-    val info: PageInfo,
-    val results: List<Character>
-)
-
-data class PageInfo(
-    val count: Int? = null,
-    val pages: Int? = null,
-    val next: String? = null,
-    val prev: String? = null
-)
-
-fun CharacterResponse.toCharacter(): Character {
-    return Character(
-        id = id ?: 0,
-        name = name ?: "",
-        status = status ?: "",
-        species = species ?: "",
-        gender = gender ?: "",
-        origin = origin?.name ?: "",
-        location = location?.name ?: "",
-        image = image ?: "",
-        episode = episode
-    )
-}
-
-fun CharactersResponse.toCharacterPage(): CharacterPage {
-    return CharacterPage(
-        info = info?.toPageInfo() ?: throw IllegalStateException("Info is null"),
-        results = results.map { it.toCharacter() }
-    )
-}
-
-fun Info.toPageInfo(): PageInfo {
-    return PageInfo(
-        count = count ?: 0,
-        pages = pages ?: 0,
-        next = next,
-        prev = prev
-    )
-}
-
-val exampleCharacters = listOf(
-    Character(
+val exampleCharacterUis = listOf(
+    CharacterUi(
         id = 1,
         name = "Rick Sanchez",
         status = "Alive",
@@ -70,7 +15,7 @@ val exampleCharacters = listOf(
             "https://rickandmortyapi.com/api/episode/2"
         )
     ),
-    Character(
+    CharacterUi(
         id = 2,
         name = "Morty Smith",
         status = "Alive",
@@ -84,7 +29,7 @@ val exampleCharacters = listOf(
             "https://rickandmortyapi.com/api/episode/2"
         )
     ),
-    Character(
+    CharacterUi(
         id = 3,
         name = "Summer Smith",
         status = "Alive",
@@ -98,7 +43,7 @@ val exampleCharacters = listOf(
             "https://rickandmortyapi.com/api/episode/2"
         )
     ),
-    Character(
+    CharacterUi(
         id = 4,
         name = "Beth Smith",
         status = "Alive",
@@ -112,7 +57,7 @@ val exampleCharacters = listOf(
             "https://rickandmortyapi.com/api/episode/2"
         )
     ),
-    Character(
+    CharacterUi(
         id = 5,
         name = "Jerry Smith",
         status = "Alive",
@@ -127,4 +72,3 @@ val exampleCharacters = listOf(
         )
     )
 )
-

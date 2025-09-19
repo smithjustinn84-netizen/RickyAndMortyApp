@@ -1,7 +1,7 @@
 package ai.revealtech.hsinterview.characterdetail
 
 import ai.revealtech.hsinterview.data.CharacterRepo
-import ai.revealtech.hsinterview.model.Character
+import ai.revealtech.hsinterview.model.CharacterUi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 
 sealed class DetailUiState {
-    data class Success(val data: Character) : DetailUiState()
+    data class Success(val character: CharacterUi) : DetailUiState()
     data class Error(val message: String) : DetailUiState()
     object Loading : DetailUiState()
 }
@@ -38,15 +38,14 @@ class DetailViewModel @Inject constructor(
 
     fun fetchCharacter() {
         viewModelScope.launch {
-            val fetchedData = characterRepo.loadCharacter(characterId)
+            try {
+                val character = characterRepo.getCharacter(characterId)
 
-            // Line 45 (example - now safe): Accessing _uiState.value
-            _uiState.update {
-                if (fetchedData != null) {
-                    DetailUiState.Success(fetchedData)
-                } else {
-                    DetailUiState.Error("Error fetching data")
+                _uiState.update {
+                    DetailUiState.Success(character)
                 }
+            } catch (e: Exception) {
+                DetailUiState.Error("Error: ${e.message}")
             }
         }
     }

@@ -1,8 +1,8 @@
 package ai.revealtech.hsinterview.characters
 
 import ai.revealtech.hsinterview.R
-import ai.revealtech.hsinterview.model.Character
-import ai.revealtech.hsinterview.model.exampleCharacters
+import ai.revealtech.hsinterview.model.CharacterUi
+import ai.revealtech.hsinterview.model.exampleCharacterUis
 import ai.revealtech.hsinterview.ui.ErrorScreen
 import ai.revealtech.hsinterview.ui.LoadingScreen
 import ai.revealtech.hsinterview.ui.previewHandler
@@ -89,7 +89,7 @@ fun CharacterScreen(
 
 @Composable
 private fun CharacterContent(
-    characters: LazyPagingItems<Character>,
+    characters: LazyPagingItems<CharacterUi>,
     modifier: Modifier,
     onClick: (Int) -> Unit = {}
 ) {
@@ -102,9 +102,9 @@ private fun CharacterContent(
             items(
                 count = characters.itemCount,
             ) { index ->
-                characters[index]?.let {
+                characters[index]?.let { character ->
                     CharacterRow(
-                        character = it,
+                        character = character,
                         onClick = onClick
                     )
                 }
@@ -116,7 +116,7 @@ private fun CharacterContent(
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun CharacterRow(
-    character: Character,
+    character: CharacterUi,
     onClick: (Int) -> Unit = {}
 ) {
     Card(
@@ -147,7 +147,7 @@ fun CharacterRow(
 
 @Composable
 private fun CharacterSummary(
-    character: Character,
+    character: CharacterUi,
     modifier: Modifier = Modifier
 ) {
     Column(modifier) {
@@ -223,7 +223,7 @@ fun LogoImage(modifier: Modifier = Modifier) {
 @Composable
 fun CharacterContentPreview() {
     // create list of fake data for preview
-    val fakeData = exampleCharacters
+    val fakeData = exampleCharacterUis
     // create pagingData from a list of fake data
     val pagingData = PagingData.from(fakeData)
     // pass pagingData containing fake data to a MutableStateFlow
@@ -254,7 +254,7 @@ fun CharacterHeaderPreview() {
 fun CharacterRowPreview() {
     HsInterviewTheme {
         Surface {
-            CharacterRow(character = exampleCharacters[0])
+            CharacterRow(character = exampleCharacterUis[0])
         }
     }
 }
