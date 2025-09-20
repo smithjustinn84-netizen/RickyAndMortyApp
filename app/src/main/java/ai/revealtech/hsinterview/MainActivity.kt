@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * This activity serves as the entry point and hosts the [RickNavGraph].
  */
 @AndroidEntryPoint
-class RickActivity : ComponentActivity() {
+class MainActivity : ComponentActivity() {
     /**
      * Called when the activity is first created.
      * This is where you should do all of your normal static set up: create views, bind data to lists, etc.

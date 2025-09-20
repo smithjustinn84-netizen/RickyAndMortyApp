@@ -8,4 +8,4 @@ import dagger.hilt.android.HiltAndroidApp
  * This class is annotated with [HiltAndroidApp] to enable Hilt for dependency injection.
  */
 @HiltAndroidApp
-class RickApplication : Application()
+class Application : Application()

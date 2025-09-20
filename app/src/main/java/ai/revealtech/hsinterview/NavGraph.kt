@@ -23,10 +23,13 @@ fun RickNavGraph(
     navController: NavHostController = rememberNavController(),
     startDestination: Destination = CharacterRoute
 ) {
-    NavHost(navController, startDestination) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        modifier = modifier
+    ) {
         composable<CharacterRoute> {
             CharacterScreen(
-                modifier = modifier,
                 onClick = { characterId ->
                     navController.navigate(DetailRoute(characterId))
                 }
@@ -34,7 +37,6 @@ fun RickNavGraph(
         }
         composable<DetailRoute> {
             DetailScreen(
-                modifier = modifier,
                 onBackClick = {
                     navController.popBackStack()
                 }
