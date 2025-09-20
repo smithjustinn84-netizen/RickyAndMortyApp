@@ -25,27 +25,29 @@ import kotlinx.serialization.json.Json
  *
  * @return A configured [HttpClient] instance.
  */
-fun httpClient(): HttpClient = HttpClient {
-    install(ContentNegotiation) {
-        json(
-            Json {
-                prettyPrint = true
-                ignoreUnknownKeys = true
-                isLenient = true
-            },
-            contentType = ContentType.Companion.Any
-        )
-    }
-    install(Logging) {
-        logger = Logger.Companion.ANDROID
-        level = LogLevel.ALL
-    }
-    install(Resources)
-    install(HttpRequestRetry) {
-        retryOnServerErrors(maxRetries = 5)
-        exponentialDelay()
-    }
-    defaultRequest {
-        url("https://rickandmortyapi.com/api/")
+fun httpClient(): HttpClient {
+    return HttpClient {
+        install(ContentNegotiation) {
+            json(
+                Json {
+                    prettyPrint = true
+                    ignoreUnknownKeys = true
+                    isLenient = true
+                },
+                contentType = ContentType.Companion.Any
+            )
+        }
+        install(Logging) {
+            logger = Logger.Companion.ANDROID
+            level = LogLevel.ALL
+        }
+        install(Resources)
+        install(HttpRequestRetry) {
+            retryOnServerErrors(maxRetries = 5)
+            exponentialDelay()
+        }
+        defaultRequest {
+            url("https://rickandmortyapi.com/api/")
+        }
     }
 }

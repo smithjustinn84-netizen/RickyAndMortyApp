@@ -13,7 +13,7 @@ import coil3.compose.AsyncImagePreviewHandler
 @OptIn(ExperimentalCoilApi::class)
 val previewHandler = AsyncImagePreviewHandler {
     ColorImage(
-        Color.Companion.LightGray.toArgb(),
+        Color.LightGray.toArgb(),
         width = 300,
         height = 300,
     )
