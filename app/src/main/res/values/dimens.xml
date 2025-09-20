@@ -10,5 +10,6 @@
     <dimen name="small_space">8dp</dimen>
     <dimen name="extra_small_space">4dp</dimen>
     <dimen name="card_internal_padding">8dp</dimen>
+    <dimen name="medium_space">8.dp</dimen>
 
 </resources>

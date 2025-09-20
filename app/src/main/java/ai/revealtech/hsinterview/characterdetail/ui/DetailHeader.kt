@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,8 +37,8 @@ fun DetailHeader(
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.primary,
-        shadowElevation = 4.dp
+        color = Color.Transparent,
+        shadowElevation = 0.dp
     ) {
         Row(
             modifier = Modifier
@@ -48,14 +49,14 @@ fun DetailHeader(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back_button),
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
             Text(
                 text = characterName,
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.weight(1f),
-                color = MaterialTheme.colorScheme.onPrimary
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }

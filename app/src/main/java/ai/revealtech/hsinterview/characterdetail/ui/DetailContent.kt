@@ -20,7 +20,7 @@ import coil3.compose.LocalAsyncImagePreviewHandler
  * including the header and character details.
  *
  * @param character The [Character] object to display.
- * @param modifier Modifier for this composable.
+ * @param modifier Modifier for this composable. It should include padding for insets.
  * @param onBackClick Callback invoked when the back button in the header is clicked.
  */
 @Composable
@@ -30,7 +30,7 @@ fun DetailContent(
     onBackClick: () -> Unit
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         DetailHeader(

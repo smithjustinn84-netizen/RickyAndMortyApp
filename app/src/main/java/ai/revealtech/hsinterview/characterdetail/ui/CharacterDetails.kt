@@ -1,5 +1,6 @@
 package ai.revealtech.hsinterview.characterdetail.ui
 
+import ai.revealtech.hsinterview.R
 import ai.revealtech.hsinterview.model.Character
 import ai.revealtech.hsinterview.model.previewCharacter
 import ai.revealtech.hsinterview.ui.CharacterImage
@@ -12,12 +13,14 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.annotation.ExperimentalCoilApi
@@ -39,6 +42,9 @@ fun CharacterDetails(
     BoxWithConstraints(
         modifier = modifier
     ) {
+        val detailsModifier = Modifier
+            .padding(dimensionResource(R.dimen.medium_space)) // Added common padding
+
         when {
             maxWidth > 400.dp -> {
                 // Landscape layout: Image on the left (40%), details on the right (60%)
@@ -55,7 +61,7 @@ fun CharacterDetails(
                     )
                     Details(
                         character = character,
-                        modifier = Modifier
+                        modifier = detailsModifier
                             .weight(0.6f)
                             .fillMaxHeight()
                     )
@@ -77,7 +83,8 @@ fun CharacterDetails(
                     )
                     Details(
                         character = character,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = detailsModifier
+                            .fillMaxSize()
                     )
                 }
             }

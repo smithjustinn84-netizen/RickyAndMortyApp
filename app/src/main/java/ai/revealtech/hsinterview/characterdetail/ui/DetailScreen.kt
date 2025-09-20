@@ -6,8 +6,10 @@ import ai.revealtech.hsinterview.ui.LoadingScreen
 import ai.revealtech.hsinterview.ui.previewHandler
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -35,7 +37,10 @@ fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit = {}
 ) {
-    Scaffold(modifier = modifier) { innerPadding ->
+    Scaffold(
+        modifier = modifier,
+        contentWindowInsets = WindowInsets.safeDrawing // Explicitly set contentWindowInsets
+    ) { innerPadding ->
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         DetailScreenLayout(
             uiState = uiState,
@@ -63,7 +68,9 @@ fun DetailScreenLayout(
         is DetailUiState.Success -> {
             DetailContent(
                 character = state.character,
-                modifier = Modifier.padding(paddingValues).fillMaxSize(),
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(),
                 onBackClick = onBackClick
             )
         }
@@ -71,12 +78,16 @@ fun DetailScreenLayout(
         is DetailUiState.Error -> {
             ErrorScreen(
                 message = state.message,
-                modifier = Modifier.padding(paddingValues).fillMaxSize()
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
             )
         }
 
         DetailUiState.Loading -> {
-            LoadingScreen(modifier = Modifier.padding(paddingValues).fillMaxSize())
+            LoadingScreen(modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize())
         }
     }
 }
