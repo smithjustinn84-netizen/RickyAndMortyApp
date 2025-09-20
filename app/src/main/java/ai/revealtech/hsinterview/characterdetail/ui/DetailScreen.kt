@@ -2,7 +2,7 @@ package ai.revealtech.hsinterview.characterdetail.ui
 
 import ai.revealtech.hsinterview.R
 import ai.revealtech.hsinterview.model.Character
-import ai.revealtech.hsinterview.model.exampleCharacterUis
+import ai.revealtech.hsinterview.model.previewCharacters
 import ai.revealtech.hsinterview.ui.ErrorScreen
 import ai.revealtech.hsinterview.ui.LoadingScreen
 import ai.revealtech.hsinterview.ui.previewHandler
@@ -324,7 +324,7 @@ fun DetailHeader(
 fun DetailScreenPreview() {
     HsInterviewTheme {
         Surface {
-            DetailContent(character = exampleCharacterUis[0], onBackClick = {})
+            DetailContent(character = previewCharacters[0], onBackClick = {})
         }
     }
 }
@@ -344,7 +344,7 @@ fun DetailHeaderPreview() {
 fun CharacterDetailsPreview() {
     HsInterviewTheme {
         Surface {
-            CharacterDetails(character = exampleCharacterUis[0])
+            CharacterDetails(character = previewCharacters[0])
         }
     }
 }

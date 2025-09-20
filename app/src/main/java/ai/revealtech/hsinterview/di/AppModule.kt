@@ -3,7 +3,7 @@ package ai.revealtech.hsinterview.di
 import ai.revealtech.hsinterview.data.local.AppDatabase
 import ai.revealtech.hsinterview.data.local.CharacterDao
 import ai.revealtech.hsinterview.data.local.CharacterEntity
-import ai.revealtech.hsinterview.data.local.database
+import ai.revealtech.hsinterview.data.local.createAppDatabase
 import ai.revealtech.hsinterview.data.network.NetworkDataSource
 import ai.revealtech.hsinterview.data.network.httpClient
 import ai.revealtech.hsinterview.data.pager
@@ -45,7 +45,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideDatabase(@ApplicationContext applicationContext: Context): AppDatabase {
-        return database(applicationContext)
+        return createAppDatabase(applicationContext)
     }
 
     /**

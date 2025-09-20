@@ -9,7 +9,7 @@ import androidx.room.Room
  * @param applicationContext The application context.
  * @return An instance of [AppDatabase].
  */
-fun database(applicationContext: Context): AppDatabase {
+fun createAppDatabase(applicationContext: Context): AppDatabase {
     return Room.databaseBuilder(
         applicationContext,
         AppDatabase::class.java, "database-name"

@@ -3,7 +3,7 @@ package ai.revealtech.hsinterview.model
 /**
  * A list of sample [Character] objects for use in previews and testing.
  */
-val exampleCharacterUis = listOf(
+val previewCharacters = listOf(
     Character(
         id = 1,
         name = "Rick Sanchez",

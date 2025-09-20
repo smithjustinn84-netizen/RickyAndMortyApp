@@ -2,7 +2,7 @@ package ai.revealtech.hsinterview.characters.ui
 
 import ai.revealtech.hsinterview.R
 import ai.revealtech.hsinterview.model.Character
-import ai.revealtech.hsinterview.model.exampleCharacterUis
+import ai.revealtech.hsinterview.model.previewCharacters
 import ai.revealtech.hsinterview.ui.ErrorScreen
 import ai.revealtech.hsinterview.ui.LoadingScreen
 import ai.revealtech.hsinterview.ui.previewHandler
@@ -341,7 +341,7 @@ fun LogoImage(modifier: Modifier = Modifier) {
 @Composable
 fun CharacterContentPreview() {
     // create list of fake data for preview
-    val fakeData = exampleCharacterUis
+    val fakeData = previewCharacters
     // create pagingData from a list of fake data
     val pagingData = PagingData.from(fakeData)
     // pass pagingData containing fake data to a MutableStateFlow
@@ -372,7 +372,7 @@ fun CharacterHeaderPreview() {
 fun CharacterRowPreview() {
     HsInterviewTheme {
         Surface {
-            CharacterRow(character = exampleCharacterUis[0])
+            CharacterRow(character = previewCharacters[0])
         }
     }
 }
@@ -381,7 +381,7 @@ fun CharacterRowPreview() {
 @Composable
 fun LoadErrorNotificationPreview() {
     // create list of fake data for preview
-    val fakeData = exampleCharacterUis
+    val fakeData = previewCharacters
     // create pagingData from a list of fake data
     val pagingData = PagingData.from(fakeData)
     // pass pagingData containing fake data to a MutableStateFlow
