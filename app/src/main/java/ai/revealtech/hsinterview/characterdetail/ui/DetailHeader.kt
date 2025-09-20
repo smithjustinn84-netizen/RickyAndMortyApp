@@ -2,6 +2,7 @@ package ai.revealtech.hsinterview.characterdetail.ui
 
 import ai.revealtech.hsinterview.R
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -71,3 +72,14 @@ fun DetailHeaderPreview() {
         }
     }
 }
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+fun DetailHeaderDarkPreview() {
+    HsInterviewTheme {
+        Surface {
+            DetailHeader(characterName = "Morty Smith", onBackClick = {})
+        }
+    }
+}
+

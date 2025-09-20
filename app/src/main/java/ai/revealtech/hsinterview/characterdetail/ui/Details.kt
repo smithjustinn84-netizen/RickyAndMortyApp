@@ -4,7 +4,7 @@ import ai.revealtech.hsinterview.R
 import ai.revealtech.hsinterview.model.Character
 import ai.revealtech.hsinterview.ui.previewHandler
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
-import androidx.compose.foundation.layout.Arrangement // Added import
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,12 +40,8 @@ fun Details(
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            // The padding here was already R.dimen.small_space, keeping it as is.
-            // If CharacterDetails.kt adds padding, this might become redundant or cumulative.
-            // For now, let's assume the padding in CharacterDetails.kt is the primary outer padding.
-            // This existing padding will apply *within* the scrollable column.
-            .padding(dimensionResource(R.dimen.small_space)), 
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_space)) // Added vertical spacing
+            .padding(dimensionResource(R.dimen.small_space)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_space))
     ) {
         DetailText(
             label = stringResource(R.string.name),

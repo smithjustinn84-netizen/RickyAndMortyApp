@@ -5,6 +5,7 @@ import ai.revealtech.hsinterview.model.previewCharacters
 import ai.revealtech.hsinterview.ui.ErrorScreen
 import ai.revealtech.hsinterview.ui.LoadingScreen
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -133,3 +134,20 @@ fun CharacterContentPreview() {
         }
     }
 }
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode") // Added
+@Composable
+fun CharacterContentDarkPreview() {
+    val fakeData = previewCharacters
+    val pagingData = PagingData.from(fakeData)
+    val fakeDataFlow = MutableStateFlow(pagingData)
+    HsInterviewTheme {
+        Surface {
+            CharacterContent(
+                characters = fakeDataFlow.collectAsLazyPagingItems(),
+                modifier = Modifier
+            )
+        }
+    }
+}
+

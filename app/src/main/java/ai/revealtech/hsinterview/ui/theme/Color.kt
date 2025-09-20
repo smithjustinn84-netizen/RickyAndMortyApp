@@ -2,17 +2,13 @@ package ai.revealtech.hsinterview.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-/** Text Black color, used for text on light backgrounds. */
-val TextBlack = Color(0xFF212328)
+val White = Color(0xFFFFFFFF)
 
-/** Off-White color, often used for text on dark backgrounds or as a light background color. */
-val OffWhite = Color(0xFFf5f5f5)
+val PrimaryColor = Color(0xFF011727)
+val Black = Color(0xFF191414)
+val DarkGray = Color(0xFF282828)
+val LightGray = Color(0xFFB3B3B3)
 
-/** Dark Grey color, typically used for dark backgrounds. */
-val DarkGrey = Color(0xFF212328)
+val ErrorColor = Color(0xFFB00020)
 
-/** Grey color, used for UI elements or backgrounds. */
-val Grey = Color(0xFF272b33)
-
-/** Light Grey color, used for UI elements or backgrounds, lighter than [Grey]. */
-val LightGrey = Color(0xFF3c3e43)
+val OffWhite = Color(0xFFF5F5F5)
