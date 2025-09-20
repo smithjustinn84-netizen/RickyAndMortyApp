@@ -41,7 +41,7 @@ fun Details(
         modifier = modifier
             .verticalScroll(rememberScrollState())
             .padding(dimensionResource(R.dimen.small_space)),
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.small_space))
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.details_item_spacing))
     ) {
         DetailText(
             label = stringResource(R.string.name),
@@ -96,7 +96,7 @@ fun DetailText(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.padding(vertical = dimensionResource(R.dimen.extra_small_space)),
+        modifier = modifier.padding(vertical = dimensionResource(R.dimen.small_space)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
