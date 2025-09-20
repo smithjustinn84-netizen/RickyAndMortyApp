@@ -6,6 +6,7 @@ import ai.revealtech.hsinterview.ui.LoadingScreen
 import ai.revealtech.hsinterview.ui.previewHandler
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -62,7 +63,7 @@ fun DetailScreenLayout(
         is DetailUiState.Success -> {
             DetailContent(
                 character = state.character,
-                modifier = Modifier.padding(paddingValues),
+                modifier = Modifier.padding(paddingValues).fillMaxSize(),
                 onBackClick = onBackClick
             )
         }
@@ -70,12 +71,12 @@ fun DetailScreenLayout(
         is DetailUiState.Error -> {
             ErrorScreen(
                 message = state.message,
-                modifier = Modifier.padding(paddingValues)
+                modifier = Modifier.padding(paddingValues).fillMaxSize()
             )
         }
 
         DetailUiState.Loading -> {
-            LoadingScreen(modifier = Modifier.padding(paddingValues))
+            LoadingScreen(modifier = Modifier.padding(paddingValues).fillMaxSize())
         }
     }
 }

@@ -6,6 +6,7 @@ import ai.revealtech.hsinterview.ui.ErrorScreen
 import ai.revealtech.hsinterview.ui.LoadingScreen
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
@@ -29,48 +30,59 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * It handles loading states (refresh, append errors) and displays either an error screen,
  * a loading screen, or the character content.
  *
- * @param modifier Modifier for this composable.
+ * @param modifier Modifier for this composable, applied to the Scaffold.
  * @param viewModel The [CharacterViewModel] used to fetch character data.
- * @param onClick Callback invoked when a character row is clicked, providing the character's ID.
+ * @param onClick Callback invoked when a character row is clicked, providing the character\'s ID.
  */
 @Composable
 fun CharacterScreen(
-    modifier: Modifier = Modifier, // Added default modifier
+    modifier: Modifier = Modifier,
     viewModel: CharacterViewModel = hiltViewModel(),
     onClick: (Int) -> Unit = {}
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
+    val lazyPagingItems = viewModel.pager.collectAsLazyPagingItems()
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        modifier = modifier,
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
-        val lazyPagingItems = viewModel.pager.collectAsLazyPagingItems()
 
-        when {
-            lazyPagingItems.loadState.refresh is LoadState.Error -> {
+        val refreshState = lazyPagingItems.loadState.refresh
+
+        when (refreshState) {
+            is LoadState.Loading -> {
+                LoadingScreen(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                )
+            }
+
+            is LoadState.Error -> {
                 ErrorScreen(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize(),
                     onRetry = { lazyPagingItems.retry() }
                 )
             }
 
-            else -> {
+            else -> { // NotLoading or Idle (includes LoadState.NotLoading)
                 CharacterContent(
                     characters = lazyPagingItems,
-                    modifier = modifier.padding(innerPadding),
+                    modifier = Modifier.padding(innerPadding),
                     onClick = onClick
                 )
             }
         }
 
+        // Handle append errors with a Snackbar, doesn't need to fill the screen or use innerPadding here
         if (lazyPagingItems.loadState.append is LoadState.Error) {
             LoadErrorNotification(
                 snackbarHostState,
                 onRetry = { lazyPagingItems.retry() }
             )
-        }
-
-        if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
-            LoadingScreen()
         }
     }
 }
@@ -79,21 +91,21 @@ fun CharacterScreen(
  * Composable function that displays the list of characters.
  *
  * @param characters The [LazyPagingItems] containing the character data.
- * @param modifier Modifier for this composable.
- * @param onClick Callback invoked when a character row is clicked, providing the character's ID.
+ * @param modifier Modifier for this composable. This will include padding from the Scaffold.
+ * @param onClick Callback invoked when a character row is clicked, providing the character\'s ID.
  */
 @Composable
 fun CharacterContent(
     characters: LazyPagingItems<Character>,
-    modifier: Modifier = Modifier, // Added default modifier
+    modifier: Modifier = Modifier,
     onClick: (Int) -> Unit = {}
 ) {
     Column(modifier = modifier) {
-        LazyColumn {
+        LazyColumn(modifier = Modifier.fillMaxSize()) {
             item { CharacterHeader() }
             items(
                 count = characters.itemCount,
-                key = { index -> characters.peek(index)?.id ?: index } 
+                key = { index -> characters.peek(index)?.id ?: index }
             ) { index ->
                 characters[index]?.let { character ->
                     CharacterRow(
@@ -109,13 +121,9 @@ fun CharacterContent(
 @Preview(showBackground = true)
 @Composable
 fun CharacterContentPreview() {
-    // create list of fake data for preview
     val fakeData = previewCharacters
-    // create pagingData from a list of fake data
     val pagingData = PagingData.from(fakeData)
-    // pass pagingData containing fake data to a MutableStateFlow
     val fakeDataFlow = MutableStateFlow(pagingData)
-    // pass flow to composable
     HsInterviewTheme {
         Surface {
             CharacterContent(
