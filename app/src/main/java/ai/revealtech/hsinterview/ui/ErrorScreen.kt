@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudOff
@@ -37,27 +38,35 @@ fun ErrorScreen(
     message: String = stringResource(R.string.failed_to_load),
     onRetry: () -> Unit = {}
 ) {
-    Column(modifier = modifier.fillMaxSize()) {
-        Column(
-            Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(stringResource(R.string.error))
-            Image(
-                imageVector = Icons.Default.CloudOff,
-                contentDescription = stringResource(R.string.failed_to_load),
-                modifier = Modifier.size(48.dp),
-                colorFilter = ColorFilter.tint(
-                    color = MaterialTheme.colorScheme.onBackground,
-                    blendMode = BlendMode.SrcIn
-                )
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.error),
+            style = MaterialTheme.typography.headlineSmall
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Image(
+            imageVector = Icons.Default.CloudOff,
+            contentDescription = stringResource(R.string.failed_to_load),
+            modifier = Modifier.size(64.dp),
+            colorFilter = ColorFilter.tint(
+                color = MaterialTheme.colorScheme.onBackground,
+                blendMode = BlendMode.SrcIn
             )
-            Text(message)
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = onRetry) {
-                Text(stringResource(R.string.retry))
-            }
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyLarge
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Button(onClick = onRetry) {
+            Text(stringResource(R.string.retry))
         }
     }
 }
