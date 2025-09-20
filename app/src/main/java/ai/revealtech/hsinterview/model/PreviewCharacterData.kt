@@ -76,4 +76,20 @@ val previewCharacters = listOf(
     )
 )
 
-val previewCharacter = previewCharacters[0]
+/**
+ * A single sample [Character] object for use in previews and testing.
+ */
+val previewCharacter = Character(
+    id = 1,
+    name = "Rick Sanchez",
+    status = "Alive",
+    species = "Human",
+    gender = "Male",
+    origin = "Earth (C-137)",
+    location = "Citadel of Ricks",
+    image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+    episode = listOf(
+        "https://rickandmortyapi.com/api/episode/1",
+        "https://rickandmortyapi.com/api/episode/2"
+    )
+)
