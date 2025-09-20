@@ -47,7 +47,8 @@ fun ErrorScreen(
     ) {
         Text(
             text = stringResource(R.string.error),
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.error // Changed color
         )
         Spacer(modifier = Modifier.height(8.dp))
         Image(
@@ -55,7 +56,7 @@ fun ErrorScreen(
             contentDescription = stringResource(R.string.failed_to_load),
             modifier = Modifier.size(64.dp),
             colorFilter = ColorFilter.tint(
-                color = MaterialTheme.colorScheme.onBackground,
+                color = MaterialTheme.colorScheme.error, // Changed color
                 blendMode = BlendMode.SrcIn
             )
         )
