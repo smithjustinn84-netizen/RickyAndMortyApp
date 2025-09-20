@@ -33,12 +33,24 @@ class CharacterRemoteMediator(
     private val database: AppDatabase,
     private val networkService: NetworkDataSource
 ) : RemoteMediator<Int, CharacterEntity>() {
+
+    companion object {
+        private const val UNKNOWN_TOTAL_PAGES = 42
+        private const val UNKNOWN_TOTAL_CHARACTERS = 826
+        private const val DEFAULT_PAGE_SIZE = 20
+        private const val STARTING_PAGE_INDEX = 1
+    }
+
     private val userDao = database.characterDao()
-    private var totalPages = 42 // Default value, will be updated from API response
-    private var totalCharacters = 826 // Default value, will be updated from API response
+    private var totalPages: Int = UNKNOWN_TOTAL_PAGES
+    private var totalCharacters: Int = UNKNOWN_TOTAL_CHARACTERS
 
     private val pageSize: Int
-        get() = if (totalPages > 0) ceil(totalCharacters.toDouble() / totalPages).toInt() else 20 // Default page size if totalPages is 0
+        get() = if (totalPages > 0 && totalCharacters > 0) {
+            maxOf(1, ceil(totalCharacters.toDouble() / totalPages).toInt())
+        } else {
+            DEFAULT_PAGE_SIZE
+        }
 
     /**
      * Loads data from the network based on the [LoadType] and [PagingState].
@@ -54,18 +66,21 @@ class CharacterRemoteMediator(
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, CharacterEntity>,
-
-        ): MediatorResult {
+    ): MediatorResult {
         try {
             val newPage = when (loadType) {
-                LoadType.REFRESH -> 1
+                LoadType.REFRESH -> {
+                    STARTING_PAGE_INDEX
+                }
+
                 LoadType.PREPEND ->
                     return MediatorResult.Success(endOfPaginationReached = true)
 
                 LoadType.APPEND -> {
                     val page = state.getCurrentPage()
                     when {
-                        page < totalPages -> page + 1
+                        totalPages > 0 && page < totalPages -> page + 1
+                        totalPages == 0 && page == STARTING_PAGE_INDEX -> STARTING_PAGE_INDEX
                         else -> return MediatorResult.Success(endOfPaginationReached = true)
                     }
                 }
@@ -73,11 +88,6 @@ class CharacterRemoteMediator(
 
             val response = networkService.loadCharacters(newPage)
 
-            // set total pages and total characters from REST API
-            totalPages = response.info.pages
-            totalCharacters = response.info.count
-
-            // insert data into database
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
                     userDao.clearAll()
@@ -88,7 +98,7 @@ class CharacterRemoteMediator(
             preloadImages(response.images, context)
 
             return MediatorResult.Success(
-                endOfPaginationReached = response.results.isEmpty() || newPage >= totalPages
+                endOfPaginationReached = response.results.isEmpty() || (totalPages > 0 && newPage >= totalPages)
             )
         } catch (e: IOException) {
             return MediatorResult.Error(e)
@@ -105,9 +115,11 @@ class CharacterRemoteMediator(
      * @return An [InitializeAction] to either launch an initial refresh or skip it.
      */
     override suspend fun initialize(): InitializeAction {
+        // If the database is empty, always trigger an initial load.
         return if (userDao.isEmpty()) {
             InitializeAction.LAUNCH_INITIAL_REFRESH
         } else {
+            // If the database is not empty, assume it's sufficiently populated.
             InitializeAction.SKIP_INITIAL_REFRESH
         }
     }
@@ -119,8 +131,16 @@ class CharacterRemoteMediator(
      * @return The current page number.
      */
     private fun PagingState<Int, CharacterEntity>.getCurrentPage(): Int {
-        val lastItemId = lastItemOrNull()?.id ?: 1
-        return if (pageSize > 0) ceil(lastItemId.toDouble() / pageSize).toInt() else 1
+        val lastItem = lastItemOrNull()
+        if (lastItem == null) {
+            return STARTING_PAGE_INDEX
+        }
+
+        return if (pageSize > 0) {
+            maxOf(STARTING_PAGE_INDEX, ceil(lastItem.id.toDouble() / pageSize).toInt())
+        } else {
+            STARTING_PAGE_INDEX
+        }
     }
 }
 
