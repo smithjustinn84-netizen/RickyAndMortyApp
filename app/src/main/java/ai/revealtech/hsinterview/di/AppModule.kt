@@ -63,19 +63,20 @@ object AppModule {
             .build()
     }
 
-
     @OptIn(ExperimentalPagingApi::class)
     @Provides
     @Singleton
     fun provideCharacterPager(
         appDatabase: AppDatabase,
-        networkDataSource: NetworkDataSource
+        networkDataSource: NetworkDataSource,
+        @ApplicationContext applicationContext: Context
     ): Pager<Int, CharacterEntity> {
         return Pager(
             config = PagingConfig(pageSize = 20),
             remoteMediator = CharacterRemoteMediator(
                 database = appDatabase,
-                networkService = networkDataSource
+                networkService = networkDataSource,
+                context = applicationContext
             ),
             pagingSourceFactory = {
                 appDatabase.characterDao().pagingSource()

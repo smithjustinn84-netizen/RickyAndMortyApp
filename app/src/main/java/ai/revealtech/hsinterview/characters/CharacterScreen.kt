@@ -21,15 +21,26 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,13 +51,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil3.annotation.ExperimentalCoilApi
-import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePainter
 import coil3.compose.LocalAsyncImagePreviewHandler
+import coil3.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.flow.MutableStateFlow
+
 
 @Composable
 fun CharacterScreen(
@@ -54,35 +68,58 @@ fun CharacterScreen(
     viewModel: CharacterViewModel = hiltViewModel(),
     onClick: (Int) -> Unit = {}
 ) {
-    Scaffold { innerPadding ->
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+    ) { innerPadding ->
         val lazyPagingItems = viewModel.pager.collectAsLazyPagingItems()
 
-        CharacterContent(
-            characters = lazyPagingItems,
-            modifier = modifier.padding(innerPadding),
-            onClick = onClick
-        )
-
-        lazyPagingItems.loadState.apply {
-            when {
-                refresh is androidx.paging.LoadState.Loading -> {
-                    LoadingScreen()
-                }
-
-                append is androidx.paging.LoadState.Loading -> {
-                    LoadingScreen()
-                }
-
-                refresh is androidx.paging.LoadState.Error -> {
-                    val error = (refresh as androidx.paging.LoadState.Error).error
-                    ErrorScreen(error = error.message ?: "Unknown error")
-                }
-
-                append is androidx.paging.LoadState.Error -> {
-                    val error = (append as androidx.paging.LoadState.Error).error
-                    ErrorScreen(error = error.message ?: "Unknown error")
-                }
+        when {
+            lazyPagingItems.loadState.refresh is LoadState.Error -> {
+                ErrorScreen(
+                    onRetry = { lazyPagingItems.retry() }
+                )
             }
+
+            else -> {
+                CharacterContent(
+                    characters = lazyPagingItems,
+                    modifier = modifier.padding(innerPadding),
+                    onClick = onClick
+                )
+            }
+        }
+
+        if (lazyPagingItems.loadState.append is LoadState.Error) {
+            LoadErrorNotification(
+                snackbarHostState,
+                onRetry = { lazyPagingItems.retry() }
+            )
+        }
+
+        if (lazyPagingItems.loadState.refresh == LoadState.Loading) {
+            LoadingScreen()
+        }
+    }
+}
+
+@Composable
+private fun LoadErrorNotification(
+    snackbarHostState: SnackbarHostState,
+    onRetry: () -> Unit,
+) {
+    val message = stringResource(R.string.error_loading_more_characters)
+    val retryMessage = stringResource(R.string.retry)
+    LaunchedEffect(snackbarHostState) {
+        val result = snackbarHostState.showSnackbar(
+            message,
+            duration = SnackbarDuration.Indefinite,
+            actionLabel = retryMessage,
+        )
+        when (result) {
+            SnackbarResult.Dismissed -> {} // Never gonna happen
+            SnackbarResult.ActionPerformed -> onRetry()
         }
     }
 }
@@ -93,12 +130,9 @@ private fun CharacterContent(
     modifier: Modifier,
     onClick: (Int) -> Unit = {}
 ) {
-
     Column(modifier = modifier) {
         LazyColumn {
-            stickyHeader {
-                CharacterHeader()
-            }
+            item { CharacterHeader() }
             items(
                 count = characters.itemCount,
             ) { index ->
@@ -133,14 +167,45 @@ fun CharacterRow(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-                AsyncImage(
-                    model = character.image,
+            CharacterImage(character)
+            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.small_space)))
+            CharacterSummary(character)
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalCoilApi::class)
+private fun CharacterImage(character: CharacterUi) {
+    CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+        val painter = rememberAsyncImagePainter(character.image)
+        val state by painter.state.collectAsState()
+
+        when (state) {
+            is AsyncImagePainter.State.Empty,
+            is AsyncImagePainter.State.Loading -> {
+                CircularProgressIndicator()
+            }
+
+            is AsyncImagePainter.State.Success -> {
+                Image(
+                    painter = painter,
                     contentDescription = stringResource(R.string.image_description, character),
                 )
             }
-            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.small_space)))
-            CharacterSummary(character)
+
+            is AsyncImagePainter.State.Error -> {
+                IconButton(
+                    onClick = {
+                        painter.restart()
+                    }
+                ) {
+                    Image(
+                        imageVector = Icons.Default.CloudOff,
+                        contentDescription = stringResource(R.string.error_loading_image),
+                    )
+                }
+            }
         }
     }
 }
@@ -255,6 +320,35 @@ fun CharacterRowPreview() {
     HsInterviewTheme {
         Surface {
             CharacterRow(character = exampleCharacterUis[0])
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoadErrorNotificationPreview() {
+    // create list of fake data for preview
+    val fakeData = exampleCharacterUis
+    // create pagingData from a list of fake data
+    val pagingData = PagingData.from(fakeData)
+    // pass pagingData containing fake data to a MutableStateFlow
+    val fakeDataFlow = MutableStateFlow(pagingData)
+    // pass flow to composable
+    HsInterviewTheme {
+        Surface {
+            val snackbarHostState = remember { SnackbarHostState() }
+            Scaffold(
+                snackbarHost = { SnackbarHost(snackbarHostState) }
+            ) { paddingValues ->
+                CharacterContent(
+                    characters = fakeDataFlow.collectAsLazyPagingItems(),
+                    modifier = Modifier.padding(paddingValues)
+                )
+                LoadErrorNotification(
+                    snackbarHostState = snackbarHostState,
+                    onRetry = {} // For a preview, the retry action can be empty
+                )
+            }
         }
     }
 }

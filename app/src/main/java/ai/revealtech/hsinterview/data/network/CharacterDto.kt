@@ -43,3 +43,6 @@ data class CharactersResponse(
     var info: Info,
     var results: List<CharacterDto>
 )
+
+val CharactersResponse.images
+    get() = results.map { it.image }

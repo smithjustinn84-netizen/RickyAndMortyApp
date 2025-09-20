@@ -19,4 +19,12 @@ interface CharacterDao {
 
     @Query("SELECT * FROM character WHERE id = :id")
     suspend fun getCharacter(id: Int): CharacterEntity
+
+    @Query("SELECT COUNT(*) FROM character")
+    suspend fun getCharacterCount(): Int
+
+    // In your repository or ViewModel:
+    suspend fun isEmpty(): Boolean {
+        return getCharacterCount() == 0
+    }
 }

@@ -9,9 +9,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterViewModel @Inject constructor(
-    characterRepo: CharacterRepo
+    characterRepo: CharacterRepo,
 ) : ViewModel() {
-
     val pager = characterRepo
         .getCharacters()
         .cachedIn(viewModelScope)

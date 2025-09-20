@@ -11,7 +11,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,6 +28,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,7 +57,7 @@ fun DetailScreen(
             }
 
             is DetailUiState.Error -> {
-                ErrorScreen(error = state.message)
+                ErrorScreen(message = state.message)
             }
 
             DetailUiState.Loading -> {
@@ -99,27 +99,20 @@ private fun CharacterDetails(
                 horizontal = dimensionResource(R.dimen.horizontal_margin)
             )
     ) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.list_item_padding)),
-            horizontalArrangement = Arrangement.Center
-        ) {
-            CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-                AsyncImage(
-                    model = character.image,
-                    contentDescription = stringResource(R.string.image_description, character),
-                )
-            }
-            Spacer(modifier = Modifier.padding(dimensionResource(R.dimen.small_space)))
-            Details(
-                character = character,
-                modifier = Modifier.fillMaxWidth()
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                contentScale = ContentScale.Fit,
+                model = character.image,
+                contentDescription = stringResource(R.string.image_description, character),
             )
         }
-        MoreDetails(
-            characterUi = character,
-            modifier = Modifier.padding(dimensionResource(R.dimen.small_space))
+        Details(
+            character = character,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(dimensionResource(R.dimen.small_space))
         )
     }
 }
@@ -148,29 +141,21 @@ private fun Details(
             label = stringResource(R.string.gender),
             text = character.gender
         )
-    }
-}
-
-@Composable
-fun MoreDetails(
-    characterUi: CharacterUi,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier) {
         DetailText(
             label = stringResource(R.string.location),
-            text = characterUi.location
+            text = character.location
         )
         DetailText(
             label = stringResource(R.string.origin),
-            text = characterUi.origin
+            text = character.origin
         )
         DetailText(
             label = stringResource(R.string.episodes),
-            text = characterUi.episode.size.toString()
+            text = character.episode.size.toString()
         )
     }
 }
+
 
 @Composable
 fun DetailText(
@@ -179,7 +164,7 @@ fun DetailText(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
@@ -216,7 +201,7 @@ fun DetailHeader(
         modifier = modifier
             .background(MaterialTheme.colorScheme.primary)
             .fillMaxWidth()
-            .padding(horizontal = dimensionResource(R.dimen.horizontal_margin)),
+            .padding(horizontal = dimensionResource(R.dimen.small_space)),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(onClick = onBackClick) {

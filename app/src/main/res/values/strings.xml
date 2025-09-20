@@ -14,4 +14,8 @@
     <string name="dead">Dead</string>
     <string name="unknown">Unknown</string>
     <string name="episodes">Episodes</string>
+    <string name="error_loading_image">error loading image</string>
+    <string name="failed_to_load">Failed To Load</string>
+    <string name="retry">Retry</string>
+    <string name="error_loading_more_characters">Error loading more characters</string>
 </resources>
