@@ -11,9 +11,9 @@ class CharacterNetworkDataSource @Inject constructor(
 ) : NetworkDataSource {
 
     override suspend fun loadCharacters(page: Int): CharactersResponse {
-        return client.get(Page(page)).body()
+        return client.get(Character(page)).body()
     }
 }
 
 @Resource("/character")
-private data class Page(val page: Int)
+private data class Character(val page: Int)

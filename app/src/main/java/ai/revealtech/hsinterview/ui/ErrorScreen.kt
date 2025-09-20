@@ -24,6 +24,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+/**
+ * A composable function that displays an error screen.
+ *
+ * @param modifier The modifier to be applied to the layout.
+ * @param message The error message to display. Defaults to "Failed to load".
+ * @param onRetry A lambda function to be invoked when the retry button is clicked.
+ */
 @Composable
 fun ErrorScreen(
     modifier: Modifier = Modifier,
@@ -55,6 +62,9 @@ fun ErrorScreen(
     }
 }
 
+/**
+ * A preview composable function for the [ErrorScreen].
+ */
 @Preview(showBackground = true)
 @Composable
 fun ErrorScreenPreview() {

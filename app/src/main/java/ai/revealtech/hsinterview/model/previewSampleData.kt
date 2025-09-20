@@ -1,5 +1,8 @@
 package ai.revealtech.hsinterview.model
 
+/**
+ * A list of sample [CharacterUi] objects for use in previews and testing.
+ */
 val exampleCharacterUis = listOf(
     CharacterUi(
         id = 1,

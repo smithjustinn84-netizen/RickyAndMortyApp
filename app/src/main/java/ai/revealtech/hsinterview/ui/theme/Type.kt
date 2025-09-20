@@ -6,6 +6,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
+/**
+ * Defines the typography for the application, including styles for different text elements.
+ * This instance of [Typography] is used by the Material 3 theme.
+ */
 val Typography = Typography(
   bodyLarge = TextStyle(
     fontFamily = FontFamily.Default,

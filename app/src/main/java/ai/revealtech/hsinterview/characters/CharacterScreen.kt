@@ -62,9 +62,18 @@ import coil3.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.flow.MutableStateFlow
 
 
+/**
+ * Composable function that displays the main character listing screen.
+ * It handles loading states (refresh, append errors) and displays either an error screen,
+ * a loading screen, or the character content.
+ *
+ * @param modifier Modifier for this composable.
+ * @param viewModel The [CharacterViewModel] used to fetch character data.
+ * @param onClick Callback invoked when a character row is clicked, providing the character's ID.
+ */
 @Composable
 fun CharacterScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier, // Added default modifier
     viewModel: CharacterViewModel = hiltViewModel(),
     onClick: (Int) -> Unit = {}
 ) {
@@ -104,6 +113,12 @@ fun CharacterScreen(
     }
 }
 
+/**
+ * Composable function that displays a Snackbar notification when there's an error loading more characters.
+ *
+ * @param snackbarHostState The [SnackbarHostState] to show the Snackbar.
+ * @param onRetry Callback invoked when the retry action is clicked.
+ */
 @Composable
 private fun LoadErrorNotification(
     snackbarHostState: SnackbarHostState,
@@ -118,16 +133,23 @@ private fun LoadErrorNotification(
             actionLabel = retryMessage,
         )
         when (result) {
-            SnackbarResult.Dismissed -> {} // Never gonna happen
+            SnackbarResult.Dismissed -> {} // Should not happen with Indefinite duration
             SnackbarResult.ActionPerformed -> onRetry()
         }
     }
 }
 
+/**
+ * Composable function that displays the list of characters.
+ *
+ * @param characters The [LazyPagingItems] containing the character data.
+ * @param modifier Modifier for this composable.
+ * @param onClick Callback invoked when a character row is clicked, providing the character's ID.
+ */
 @Composable
 private fun CharacterContent(
     characters: LazyPagingItems<CharacterUi>,
-    modifier: Modifier,
+    modifier: Modifier = Modifier, // Added default modifier
     onClick: (Int) -> Unit = {}
 ) {
     Column(modifier = modifier) {
@@ -147,6 +169,12 @@ private fun CharacterContent(
     }
 }
 
+/**
+ * Composable function that displays a single character row in the list.
+ *
+ * @param character The [CharacterUi] data for the row.
+ * @param onClick Callback invoked when the character row is clicked, providing the character's ID.
+ */
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun CharacterRow(
@@ -174,6 +202,12 @@ fun CharacterRow(
     }
 }
 
+/**
+ * Composable function that displays the character's image.
+ * It handles loading, success, and error states for the image using Coil.
+ *
+ * @param character The [CharacterUi] data containing the image URL.
+ */
 @Composable
 @OptIn(ExperimentalCoilApi::class)
 private fun CharacterImage(character: CharacterUi) {
@@ -190,7 +224,7 @@ private fun CharacterImage(character: CharacterUi) {
             is AsyncImagePainter.State.Success -> {
                 Image(
                     painter = painter,
-                    contentDescription = stringResource(R.string.image_description, character),
+                    contentDescription = stringResource(R.string.image_description, character.name),
                 )
             }
 
@@ -210,6 +244,12 @@ private fun CharacterImage(character: CharacterUi) {
     }
 }
 
+/**
+ * Composable function that displays the character's name, status, and species.
+ *
+ * @param character The [CharacterUi] data for the summary.
+ * @param modifier Modifier for this composable.
+ */
 @Composable
 private fun CharacterSummary(
     character: CharacterUi,
@@ -220,7 +260,7 @@ private fun CharacterSummary(
             text = character.name,
             style = MaterialTheme.typography.headlineMedium,
         )
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) { // Added vertical alignment
             StatusIcon(character.status)
             Spacer(modifier = Modifier.width(dimensionResource(R.dimen.small_space)))
             Text(text = "${character.status} - ${character.species}")
@@ -228,6 +268,11 @@ private fun CharacterSummary(
     }
 }
 
+/**
+ * Composable function that displays an icon representing the character's status.
+ *
+ * @param status The status string of the character (e.g., "Alive", "Dead", "unknown").
+ */
 @Composable
 private fun StatusIcon(status: String) {
     when (status) {
@@ -257,6 +302,9 @@ private fun StatusIcon(status: String) {
     }
 }
 
+/**
+ * Composable function that displays the header of the character list screen.
+ */
 @Composable
 fun CharacterHeader() {
     Row(
@@ -271,6 +319,11 @@ fun CharacterHeader() {
     }
 }
 
+/**
+ * Composable function that displays the application logo.
+ *
+ * @param modifier Modifier for this composable.
+ */
 @Composable
 fun LogoImage(modifier: Modifier = Modifier) {
     Image(

@@ -12,6 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 
+/**
+ * A composable function that displays a loading screen.
+ * It shows a circular progress indicator and a "Loading..." text.
+ */
 @Composable
 fun LoadingScreen() {
     Column(
@@ -24,6 +28,9 @@ fun LoadingScreen() {
     }
 }
 
+/**
+ * A preview composable function for the [LoadingScreen].
+ */
 @Preview(showBackground = true)
 @Composable
 fun LoadingPreview() {

@@ -39,6 +39,15 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.LocalAsyncImagePreviewHandler
 
+/**
+ * Composable function that displays the character detail screen.
+ * It observes the [DetailUiState] from the [DetailViewModel] and shows
+ * loading, error, or success states accordingly.
+ *
+ * @param modifier Modifier for this composable.
+ * @param viewModel The [DetailViewModel] used to fetch character details.
+ * @param onBackClick Callback invoked when the back button is clicked.
+ */
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
@@ -68,6 +77,14 @@ fun DetailScreen(
     }
 }
 
+/**
+ * Composable function that displays the main content of the detail screen,
+ * including the header and character details.
+ *
+ * @param character The [CharacterUi] object to display.
+ * @param modifier Modifier for this composable.
+ * @param onBackClick Callback invoked when the back button in the header is clicked.
+ */
 @Composable
 fun DetailContent(
     character: CharacterUi,
@@ -89,6 +106,13 @@ fun DetailContent(
     }
 }
 
+/**
+ * Composable function that displays the character's image and textual details.
+ * It adapts the layout (Row for landscape, Column for portrait) based on available width.
+ *
+ * @param character The [CharacterUi] object containing details to display.
+ * @param modifier Modifier for this composable.
+ */
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun CharacterDetails(
@@ -144,6 +168,12 @@ private fun CharacterDetails(
     }
 }
 
+/**
+ * Composable function for displaying the character's image using Coil.
+ *
+ * @param character The [CharacterUi] object containing the image URL and name.
+ * @param modifier Modifier for this composable.
+ */
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun CharacterImage(character: CharacterUi, modifier: Modifier = Modifier) {
@@ -160,6 +190,12 @@ private fun CharacterImage(character: CharacterUi, modifier: Modifier = Modifier
     }
 }
 
+/**
+ * Composable function that displays a list of character attributes (name, status, species, etc.).
+ *
+ * @param character The [CharacterUi] object containing the details.
+ * @param modifier Modifier for this composable.
+ */
 @Composable
 private fun Details(
     character: CharacterUi,
@@ -199,6 +235,13 @@ private fun Details(
     }
 }
 
+/**
+ * Composable function for displaying a labeled piece of text information.
+ *
+ * @param label The label for the text information.
+ * @param text The actual text information to display.
+ * @param modifier Modifier for this composable.
+ */
 @Composable
 fun DetailText(
     label: String,
@@ -220,6 +263,12 @@ fun DetailText(
     }
 }
 
+/**
+ * Composable function for displaying a simple text item, used as part of [DetailText].
+ *
+ * @param text The text to display.
+ * @param modifier Modifier for this composable.
+ */
 @Composable
 fun DetailText(
     text: String,
@@ -233,6 +282,14 @@ fun DetailText(
     )
 }
 
+/**
+ * Composable function for the header of the detail screen.
+ * It displays the character's name and a back button.
+ *
+ * @param characterName The name of the character to display in the header.
+ * @param modifier Modifier for this composable.
+ * @param onBackClick Callback invoked when the back button is clicked.
+ */
 @Composable
 fun DetailHeader(
     characterName: String,
@@ -249,7 +306,7 @@ fun DetailHeader(
         IconButton(onClick = onBackClick) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back button",
+                contentDescription = stringResource(R.string.back_button),
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         }
