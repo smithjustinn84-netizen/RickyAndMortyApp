@@ -2,7 +2,9 @@ package ai.revealtech.hsinterview.ui
 
 import ai.revealtech.hsinterview.R
 import ai.revealtech.hsinterview.model.Character
+import ai.revealtech.hsinterview.model.previewCharacter
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material3.CircularProgressIndicator
@@ -14,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePainter
 import coil3.compose.LocalAsyncImagePreviewHandler
@@ -68,5 +71,15 @@ fun CharacterImage(
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun CharacterImagePreview() {
+    Column {
+        CharacterImage(
+            character = previewCharacter,
+        )
     }
 }

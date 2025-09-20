@@ -2,6 +2,7 @@ package ai.revealtech.hsinterview.ui
 
 import ai.revealtech.hsinterview.R
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -78,6 +79,19 @@ fun ErrorScreen(
 @Preview(showBackground = true)
 @Composable
 fun ErrorScreenPreview() {
+    HsInterviewTheme {
+        Surface {
+            ErrorScreen(message = "Failed To Load")
+        }
+    }
+}
+
+/**
+ * A preview composable function for the [ErrorScreen] in dark mode.
+ */
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun ErrorScreenPreviewDark() {
     HsInterviewTheme {
         Surface {
             ErrorScreen(message = "Failed To Load")
