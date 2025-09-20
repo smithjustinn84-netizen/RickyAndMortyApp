@@ -15,5 +15,5 @@ Any needed documentation about the API that is to be used can be found here [htt
 
 ## Screenshots
 
-![ListView](/Screenshots/list_view.png)
-![DetailView](/Screenshots/detail_view.png)
+![ListView](/screenshots/list_view.png)
+![DetailView](/screenshots/detail_view.png)

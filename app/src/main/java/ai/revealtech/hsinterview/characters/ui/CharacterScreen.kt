@@ -1,4 +1,4 @@
-package ai.revealtech.hsinterview.characters
+package ai.revealtech.hsinterview.characters.ui
 
 import ai.revealtech.hsinterview.R
 import ai.revealtech.hsinterview.model.CharacterUi

@@ -2,8 +2,8 @@ package ai.revealtech.hsinterview.data
 
 import ai.revealtech.hsinterview.data.local.CharacterDao
 import ai.revealtech.hsinterview.data.local.CharacterEntity
-import ai.revealtech.hsinterview.data.mappers.toUi
-import ai.revealtech.hsinterview.model.CharacterUi
+import ai.revealtech.hsinterview.data.mappers.toDomain
+import ai.revealtech.hsinterview.domain.model.Character
 import androidx.paging.Pager
 import androidx.paging.PagingData
 import androidx.paging.map
@@ -17,19 +17,19 @@ import javax.inject.Singleton
  */
 interface CharacterRepo {
     /**
-     * Returns a [Flow] of [PagingData] for [CharacterUi] objects.
+     * Returns a [Flow] of [PagingData] for [Character] domain objects.
      *
-     * @return A [Flow] of [PagingData] containing [CharacterUi] objects.
+     * @return A [Flow] of [PagingData] containing [Character] domain objects.
      */
-    fun getCharacters(): Flow<PagingData<CharacterUi>>
+    fun getCharacters(): Flow<PagingData<Character>>
 
     /**
      * Suspended function to get a specific character by its ID.
      *
      * @param id The ID of the character to retrieve.
-     * @return The [CharacterUi] object corresponding to the given ID.
+     * @return The [Character] domain object corresponding to the given ID.
      */
-    suspend fun getCharacter(id: Int): CharacterUi
+    suspend fun getCharacter(id: Int): Character
 }
 
 /**
@@ -45,22 +45,28 @@ class CharacterRepoImpl @Inject constructor(
 ) : CharacterRepo {
 
     /**
-     * Returns a [Flow] of [PagingData] for [CharacterUi] objects.
-     * The data is fetched from the [pager] and mapped to [CharacterUi] objects.
+     * Returns a [Flow] of [PagingData] for [Character] domain objects.
+     * The data is fetched from the [pager] and mapped to [Character] domain objects.
      *
-     * @return A [Flow] of [PagingData] containing [CharacterUi] objects.
+     * @return A [Flow] of [PagingData] containing [Character] domain objects.
      */
-    override fun getCharacters(): Flow<PagingData<CharacterUi>> {
-        return pager.flow.map { pagingData -> pagingData.map { it.toUi() } }
+    override fun getCharacters(): Flow<PagingData<Character>> {
+        // Map from CharacterEntity to domain Character
+        return pager.flow.map { pagingData: PagingData<CharacterEntity> ->
+            pagingData.map { characterEntity ->
+                characterEntity.toDomain()
+            }
+        }
     }
 
     /**
      * Suspended function to get a specific character by its ID from the local database.
      *
      * @param id The ID of the character to retrieve.
-     * @return The [CharacterUi] object corresponding to the given ID.
+     * @return The [Character] domain object corresponding to the given ID.
      */
-    override suspend fun getCharacter(id: Int): CharacterUi {
-        return dao.getCharacter(id).toUi()
+    override suspend fun getCharacter(id: Int): Character {
+        // Map from CharacterEntity to domain Character
+        return dao.getCharacter(id).toDomain()
     }
 }
