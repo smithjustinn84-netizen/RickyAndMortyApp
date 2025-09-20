@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
  * It shows a circular progress indicator and a "Loading..." text.
  */
 @Composable
-fun LoadingScreen() {
+fun LoadingScreen(modifier: Modifier = Modifier) {
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier,
         color = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Column(

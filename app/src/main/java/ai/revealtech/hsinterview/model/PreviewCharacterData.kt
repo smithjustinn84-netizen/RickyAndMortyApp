@@ -75,3 +75,5 @@ val previewCharacters = listOf(
         )
     )
 )
+
+val previewCharacter = previewCharacters[0]
