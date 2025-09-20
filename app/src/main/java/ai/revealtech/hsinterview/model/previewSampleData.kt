@@ -1,10 +1,10 @@
 package ai.revealtech.hsinterview.model
 
 /**
- * A list of sample [CharacterUi] objects for use in previews and testing.
+ * A list of sample [Character] objects for use in previews and testing.
  */
 val exampleCharacterUis = listOf(
-    CharacterUi(
+    Character(
         id = 1,
         name = "Rick Sanchez",
         status = "Alive",
@@ -18,7 +18,7 @@ val exampleCharacterUis = listOf(
             "https://rickandmortyapi.com/api/episode/2"
         )
     ),
-    CharacterUi(
+    Character(
         id = 2,
         name = "Morty Smith",
         status = "Alive",
@@ -32,7 +32,7 @@ val exampleCharacterUis = listOf(
             "https://rickandmortyapi.com/api/episode/2"
         )
     ),
-    CharacterUi(
+    Character(
         id = 3,
         name = "Summer Smith",
         status = "Alive",
@@ -46,7 +46,7 @@ val exampleCharacterUis = listOf(
             "https://rickandmortyapi.com/api/episode/2"
         )
     ),
-    CharacterUi(
+    Character(
         id = 4,
         name = "Beth Smith",
         status = "Alive",
@@ -60,7 +60,7 @@ val exampleCharacterUis = listOf(
             "https://rickandmortyapi.com/api/episode/2"
         )
     ),
-    CharacterUi(
+    Character(
         id = 5,
         name = "Jerry Smith",
         status = "Alive",

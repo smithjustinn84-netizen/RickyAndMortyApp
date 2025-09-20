@@ -2,7 +2,7 @@ package ai.revealtech.hsinterview.data.mappers
 
 import ai.revealtech.hsinterview.data.local.CharacterEntity
 import ai.revealtech.hsinterview.data.network.CharacterDto
-import ai.revealtech.hsinterview.model.CharacterUi
+import ai.revealtech.hsinterview.model.Character
 import ai.revealtech.hsinterview.domain.model.Character as DomainCharacter
 
 /**
@@ -23,10 +23,10 @@ fun CharacterEntity.toDomain(): DomainCharacter {
 }
 
 /**
- * Maps a [DomainCharacter] from the domain layer to a [CharacterUi] in the presentation layer.
+ * Maps a [DomainCharacter] from the domain layer to a [Character] in the presentation layer.
  */
-fun DomainCharacter.toUi(): CharacterUi {
-    return CharacterUi(
+fun DomainCharacter.toUi(): Character {
+    return Character(
         id = this.id,
         name = this.name,
         status = this.status,

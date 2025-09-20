@@ -1,6 +1,6 @@
 package ai.revealtech.hsinterview
 
-import ai.revealtech.hsinterview.characterdetail.DetailScreen
+import ai.revealtech.hsinterview.characterdetail.ui.DetailScreen
 import ai.revealtech.hsinterview.characters.ui.CharacterScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

@@ -1,7 +1,7 @@
 package ai.revealtech.hsinterview.characters.ui
 
 import ai.revealtech.hsinterview.R
-import ai.revealtech.hsinterview.model.CharacterUi
+import ai.revealtech.hsinterview.model.Character
 import ai.revealtech.hsinterview.model.exampleCharacterUis
 import ai.revealtech.hsinterview.ui.ErrorScreen
 import ai.revealtech.hsinterview.ui.LoadingScreen
@@ -148,7 +148,7 @@ private fun LoadErrorNotification(
  */
 @Composable
 private fun CharacterContent(
-    characters: LazyPagingItems<CharacterUi>,
+    characters: LazyPagingItems<Character>,
     modifier: Modifier = Modifier, // Added default modifier
     onClick: (Int) -> Unit = {}
 ) {
@@ -172,13 +172,13 @@ private fun CharacterContent(
 /**
  * Composable function that displays a single character row in the list.
  *
- * @param character The [CharacterUi] data for the row.
+ * @param character The [Character] data for the row.
  * @param onClick Callback invoked when the character row is clicked, providing the character's ID.
  */
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 fun CharacterRow(
-    character: CharacterUi,
+    character: Character,
     onClick: (Int) -> Unit = {}
 ) {
     Card(
@@ -206,11 +206,11 @@ fun CharacterRow(
  * Composable function that displays the character's image.
  * It handles loading, success, and error states for the image using Coil.
  *
- * @param character The [CharacterUi] data containing the image URL.
+ * @param character The [Character] data containing the image URL.
  */
 @Composable
 @OptIn(ExperimentalCoilApi::class)
-private fun CharacterImage(character: CharacterUi) {
+private fun CharacterImage(character: Character) {
     CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
         val painter = rememberAsyncImagePainter(character.image)
         val state by painter.state.collectAsState()
@@ -247,12 +247,12 @@ private fun CharacterImage(character: CharacterUi) {
 /**
  * Composable function that displays the character's name, status, and species.
  *
- * @param character The [CharacterUi] data for the summary.
+ * @param character The [Character] data for the summary.
  * @param modifier Modifier for this composable.
  */
 @Composable
 private fun CharacterSummary(
-    character: CharacterUi,
+    character: Character,
     modifier: Modifier = Modifier
 ) {
     Column(modifier) {

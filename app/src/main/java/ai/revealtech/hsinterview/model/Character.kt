@@ -13,7 +13,7 @@ package ai.revealtech.hsinterview.model
  * @property episode A list of URLs of episodes in which the character appeared.
  * @property image The URL of the character's image.
  */
-data class CharacterUi(
+data class Character(
     val id: Int,
     val name: String,
     val status: String,

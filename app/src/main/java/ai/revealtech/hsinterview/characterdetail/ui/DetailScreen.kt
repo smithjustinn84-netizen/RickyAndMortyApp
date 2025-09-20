@@ -1,7 +1,7 @@
-package ai.revealtech.hsinterview.characterdetail
+package ai.revealtech.hsinterview.characterdetail.ui
 
 import ai.revealtech.hsinterview.R
-import ai.revealtech.hsinterview.model.CharacterUi
+import ai.revealtech.hsinterview.model.Character
 import ai.revealtech.hsinterview.model.exampleCharacterUis
 import ai.revealtech.hsinterview.ui.ErrorScreen
 import ai.revealtech.hsinterview.ui.LoadingScreen
@@ -81,13 +81,13 @@ fun DetailScreen(
  * Composable function that displays the main content of the detail screen,
  * including the header and character details.
  *
- * @param character The [CharacterUi] object to display.
+ * @param character The [Character] object to display.
  * @param modifier Modifier for this composable.
  * @param onBackClick Callback invoked when the back button in the header is clicked.
  */
 @Composable
 fun DetailContent(
-    character: CharacterUi,
+    character: Character,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit
 ) {
@@ -110,13 +110,13 @@ fun DetailContent(
  * Composable function that displays the character's image and textual details.
  * It adapts the layout (Row for landscape, Column for portrait) based on available width.
  *
- * @param character The [CharacterUi] object containing details to display.
+ * @param character The [Character] object containing details to display.
  * @param modifier Modifier for this composable.
  */
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun CharacterDetails(
-    character: CharacterUi,
+    character: Character,
     modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(
@@ -171,12 +171,12 @@ private fun CharacterDetails(
 /**
  * Composable function for displaying the character's image using Coil.
  *
- * @param character The [CharacterUi] object containing the image URL and name.
+ * @param character The [Character] object containing the image URL and name.
  * @param modifier Modifier for this composable.
  */
 @OptIn(ExperimentalCoilApi::class)
 @Composable
-private fun CharacterImage(character: CharacterUi, modifier: Modifier = Modifier) {
+private fun CharacterImage(character: Character, modifier: Modifier = Modifier) {
     CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
         AsyncImage(
             modifier = modifier,
@@ -193,12 +193,12 @@ private fun CharacterImage(character: CharacterUi, modifier: Modifier = Modifier
 /**
  * Composable function that displays a list of character attributes (name, status, species, etc.).
  *
- * @param character The [CharacterUi] object containing the details.
+ * @param character The [Character] object containing the details.
  * @param modifier Modifier for this composable.
  */
 @Composable
 private fun Details(
-    character: CharacterUi,
+    character: Character,
     modifier: Modifier = Modifier
 ) {
     Column(
