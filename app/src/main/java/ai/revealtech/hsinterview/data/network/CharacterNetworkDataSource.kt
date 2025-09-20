@@ -10,7 +10,7 @@ class CharacterNetworkDataSource @Inject constructor(
     private val client: HttpClient
 ) : NetworkDataSource {
 
-    override suspend fun loadCharacters(page: Int): CharactersResponse {
+    override suspend fun loadCharacters(page: Int): ApiCharacters {
         return client.get(Character(page)).body()
     }
 }

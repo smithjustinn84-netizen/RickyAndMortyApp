@@ -3,7 +3,7 @@ package ai.revealtech.hsinterview.data.network
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CharacterDto(
+data class ApiCharacter(
     var id: Int,
     var name: String,
     var status: String,
@@ -39,10 +39,10 @@ data class Info(
 )
 
 @Serializable
-data class CharactersResponse(
+data class ApiCharacters(
     var info: Info,
-    var results: List<CharacterDto>
+    var results: List<ApiCharacter>
 )
 
-val CharactersResponse.images
+val ApiCharacters.images
     get() = results.map { it.image }

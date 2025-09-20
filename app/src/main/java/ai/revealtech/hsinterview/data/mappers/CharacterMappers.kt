@@ -1,7 +1,7 @@
 package ai.revealtech.hsinterview.data.mappers
 
 import ai.revealtech.hsinterview.data.local.CharacterEntity
-import ai.revealtech.hsinterview.data.network.CharacterDto
+import ai.revealtech.hsinterview.data.network.ApiCharacter
 import ai.revealtech.hsinterview.model.Character
 import ai.revealtech.hsinterview.domain.model.Character as DomainCharacter
 
@@ -40,12 +40,12 @@ fun DomainCharacter.toUi(): Character {
 }
 
 /**
- * Converts a [CharacterDto] to a [CharacterEntity] model.
+ * Converts a [ApiCharacter] to a [CharacterEntity] model.
  *
- * @receiver The [CharacterDto] to convert.
+ * @receiver The [ApiCharacter] to convert.
  * @return The corresponding [CharacterEntity] model.
  */
-fun CharacterDto.toEntity(): CharacterEntity {
+fun ApiCharacter.toEntity(): CharacterEntity {
     return CharacterEntity(
         id = id,
         name = name,
