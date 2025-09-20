@@ -78,6 +78,7 @@ dependencies {
   implementation(libs.ktor.client.okhttp)
   implementation(libs.ktor.serialization.kotlinx.json)
   implementation(libs.ktor.client.logging)
+  implementation(libs.ktor.client.resources)
 
   // Paging
   implementation(libs.androidx.paging.runtime)
