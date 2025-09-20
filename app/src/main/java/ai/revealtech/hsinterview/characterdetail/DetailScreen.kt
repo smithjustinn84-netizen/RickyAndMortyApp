@@ -9,6 +9,7 @@ import ai.revealtech.hsinterview.ui.previewHandler
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +17,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +32,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.annotation.ExperimentalCoilApi
@@ -81,7 +82,10 @@ fun DetailContent(
             characterName = character.name,
             onBackClick = onBackClick
         )
-        CharacterDetails(character)
+        CharacterDetails(
+            character = character,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
@@ -91,28 +95,67 @@ private fun CharacterDetails(
     character: CharacterUi,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    BoxWithConstraints(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                vertical = dimensionResource(R.dimen.vertical_margin),
-                horizontal = dimensionResource(R.dimen.horizontal_margin)
-            )
+            .fillMaxSize()
     ) {
-        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
-            AsyncImage(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                contentScale = ContentScale.Fit,
-                model = character.image,
-                contentDescription = stringResource(R.string.image_description, character),
-            )
+        when {
+            maxWidth > 400.dp -> {
+                // Landscape layout: Image on the left, details on the right
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.Top,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    CharacterImage(
+                        character = character,
+                        modifier = Modifier
+                            .weight(1f)
+                    )
+                    Details(
+                        character = character,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(dimensionResource(R.dimen.small_space))
+                    )
+                }
+            }
+
+            else -> {
+                // Portrait layout: Image on top, details below
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CharacterImage(
+                        character = character,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Details(
+                        character = character,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(dimensionResource(R.dimen.small_space))
+                    )
+                }
+            }
         }
-        Details(
-            character = character,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.small_space))
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Composable
+private fun CharacterImage(character: CharacterUi, modifier: Modifier = Modifier) {
+    CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+        AsyncImage(
+            modifier = modifier,
+            contentScale = ContentScale.Fit,
+            model = character.image,
+            contentDescription = stringResource(
+                R.string.image_description,
+                character.name
+            ),
         )
     }
 }
@@ -155,7 +198,6 @@ private fun Details(
         )
     }
 }
-
 
 @Composable
 fun DetailText(
