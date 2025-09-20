@@ -1,6 +1,7 @@
 package ai.revealtech.hsinterview.characterdetail
 
 import ai.revealtech.hsinterview.data.CharacterRepo
+import ai.revealtech.hsinterview.data.mappers.toUi
 import ai.revealtech.hsinterview.model.CharacterUi
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -72,7 +73,7 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { DetailUiState.Loading } // Set to loading before fetching
             try {
-                val character = characterRepo.getCharacter(characterId)
+                val character = characterRepo.getCharacter(characterId).toUi()
 
                 _uiState.update {
                     DetailUiState.Success(character)
