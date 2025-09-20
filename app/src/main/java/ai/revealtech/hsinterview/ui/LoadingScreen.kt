@@ -2,6 +2,7 @@ package ai.revealtech.hsinterview.ui
 
 import ai.revealtech.hsinterview.R
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -53,6 +54,21 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 @Composable
 fun LoadingPreview() {
     HsInterviewTheme {
-        LoadingScreen()
+        Surface {
+            LoadingScreen()
+        }
+    }
+}
+
+/**
+ * A dark mode preview composable function for the [LoadingScreen].
+ */
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun LoadingPreviewDark() {
+    HsInterviewTheme {
+        Surface {
+            LoadingScreen()
+        }
     }
 }

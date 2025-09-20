@@ -26,10 +26,7 @@ class DetailViewModel @Inject constructor(
     private val getCharacterUseCase: GetCharacterUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val characterId: Int = savedStateHandle["characterId"]
-        ?: throw IllegalArgumentException("character not found in the arguments")
 
-    // Initialize with a default state
     private val _uiState: MutableStateFlow<DetailUiState> = MutableStateFlow(DetailUiState.Loading)
     /**
      * The current UI state of the detail screen, exposed as a [StateFlow].
@@ -37,26 +34,33 @@ class DetailViewModel @Inject constructor(
     val uiState: StateFlow<DetailUiState> = _uiState.asStateFlow()
 
     init {
-        fetchCharacter()
+        // Retrieve characterId from SavedStateHandle, accommodating different argument types (Int or String).
+        val idArgument: Any? = savedStateHandle["characterId"]
+        val characterId = when (idArgument) {
+            is Int -> idArgument
+            is String -> idArgument.toIntOrNull()
+            else -> null
+        } ?: throw IllegalArgumentException("Character ID not found or invalid in arguments")
+        
+        fetchCharacter(characterId)
     }
 
     /**
-     * Fetches the character details using the [getCharacterUseCase] with the [characterId].
+     * Fetches the character details using the [getCharacterUseCase] with the provided [id].
      * Updates the [_uiState] with [DetailUiState.Success] on success, or [DetailUiState.Error] on failure.
-     * The UI state is initially set to [DetailUiState.Loading].
+     * @param id The ID of the character to fetch.
      */
-    fun fetchCharacter() {
+    private fun fetchCharacter(id: Int) {
         viewModelScope.launch {
-            _uiState.update { DetailUiState.Loading } // Set to loading before fetching
             try {
-                val character = getCharacterUseCase(characterId)
-
+                val character = getCharacterUseCase(id)
                 _uiState.update {
                     DetailUiState.Success(character)
                 }
             } catch (e: Exception) {
-                _uiState.update { // Ensure error state is updated on the main thread
-                    DetailUiState.Error("Error: ${e.message}")
+                val errorMessage = e.message?.takeIf { it.isNotBlank() } ?: "An unknown error occurred."
+                _uiState.update {
+                    DetailUiState.Error(errorMessage)
                 }
             }
         }

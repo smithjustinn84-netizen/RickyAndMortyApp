@@ -1,16 +1,15 @@
-package ai.revealtech.hsinterview.characters.ui // <-- Package updated
+package ai.revealtech.hsinterview.characters.ui
 
 import ai.revealtech.hsinterview.characters.domain.GetCharactersUseCase
+import ai.revealtech.hsinterview.common.extensions.mapPagingDataItems
 import ai.revealtech.hsinterview.data.mappers.toUi
 import ai.revealtech.hsinterview.model.Character
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -31,10 +30,6 @@ class CharacterViewModel @Inject constructor(
      * The data is fetched from the use case, mapped to UI models, and cached in the [viewModelScope].
      */
     val pager: Flow<PagingData<Character>> = getCharactersUseCase()
-        .map { pagingData ->
-            pagingData.map { domainCharacter ->
-                domainCharacter.toUi()
-            }
-        }
+        .mapPagingDataItems { domainCharacter -> domainCharacter.toUi() }
         .cachedIn(viewModelScope)
 }

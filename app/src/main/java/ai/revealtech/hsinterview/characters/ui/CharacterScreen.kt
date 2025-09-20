@@ -135,7 +135,7 @@ fun CharacterContentPreview() {
     }
 }
 
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode") // Added
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 fun CharacterContentDarkPreview() {
     val fakeData = previewCharacters

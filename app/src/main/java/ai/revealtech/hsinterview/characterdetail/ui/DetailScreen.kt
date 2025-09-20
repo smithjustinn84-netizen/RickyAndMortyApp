@@ -5,6 +5,7 @@ import ai.revealtech.hsinterview.ui.ErrorScreen
 import ai.revealtech.hsinterview.ui.LoadingScreen
 import ai.revealtech.hsinterview.ui.previewHandler
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -109,6 +110,23 @@ fun DetailScreenSuccessPreview() {
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
+@Preview(name = "Detail Screen Success Dark", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun DetailScreenSuccessPreviewDark() {
+    HsInterviewTheme {
+        // Provide the Coil image handler for previews.
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            Surface {
+                DetailScreenLayout(
+                    uiState = DetailUiState.Success(character = previewCharacter),
+                    onBackClick = {}
+                )
+            }
+        }
+    }
+}
+
 @Preview(name = "Detail Screen Loading", showBackground = true)
 @Composable
 fun DetailScreenLoadingPreview() {
@@ -122,9 +140,35 @@ fun DetailScreenLoadingPreview() {
     }
 }
 
+@Preview(name = "Detail Screen Loading Dark", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun DetailScreenLoadingPreviewDark() {
+    HsInterviewTheme {
+        Surface {
+            DetailScreenLayout(
+                uiState = DetailUiState.Loading,
+                onBackClick = {}
+            )
+        }
+    }
+}
+
 @Preview(name = "Detail Screen Error", showBackground = true)
 @Composable
 fun DetailScreenErrorPreview() {
+    HsInterviewTheme {
+        Surface {
+            DetailScreenLayout(
+                uiState = DetailUiState.Error(message = "Preview Error: Could not load details."),
+                onBackClick = {}
+            )
+        }
+    }
+}
+
+@Preview(name = "Detail Screen Error Dark", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun DetailScreenErrorPreviewDark() {
     HsInterviewTheme {
         Surface {
             DetailScreenLayout(

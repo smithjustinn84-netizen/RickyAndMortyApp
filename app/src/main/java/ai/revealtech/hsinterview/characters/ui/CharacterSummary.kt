@@ -3,11 +3,14 @@ package ai.revealtech.hsinterview.characters.ui
 import ai.revealtech.hsinterview.R
 import ai.revealtech.hsinterview.model.Character
 import ai.revealtech.hsinterview.model.previewCharacters
+import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,10 +34,14 @@ fun CharacterSummary(
             text = character.name,
             style = MaterialTheme.typography.headlineMedium,
         )
-        Row(verticalAlignment = Alignment.CenterVertically) { // Added vertical alignment
+        Row(verticalAlignment = Alignment.CenterVertically) {
             StatusIcon(character.status)
             Spacer(modifier = Modifier.width(dimensionResource(R.dimen.small_space)))
-            Text(text = "${character.status} - ${character.species}")
+            Text(
+                text = "${character.status} - ${character.species}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }
@@ -42,7 +49,23 @@ fun CharacterSummary(
 @Preview(showBackground = true)
 @Composable
 fun CharacterSummaryPreview() {
-    CharacterSummary(
-        character = previewCharacters[0]
-    )
+    HsInterviewTheme {
+        Surface {
+            CharacterSummary(
+                character = previewCharacters[0]
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun CharacterSummaryPreviewDark() {
+    HsInterviewTheme {
+        Surface {
+            CharacterSummary(
+                character = previewCharacters[0]
+            )
+        }
+    }
 }

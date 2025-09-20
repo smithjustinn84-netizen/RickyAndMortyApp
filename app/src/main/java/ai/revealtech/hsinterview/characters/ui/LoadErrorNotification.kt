@@ -3,6 +3,7 @@ package ai.revealtech.hsinterview.characters.ui
 import ai.revealtech.hsinterview.R
 import ai.revealtech.hsinterview.model.previewCharacters
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -49,6 +50,35 @@ fun LoadErrorNotification(
 @Preview(showBackground = true)
 @Composable
 fun LoadErrorNotificationPreview() {
+    // create list of fake data for preview
+    val fakeData = previewCharacters
+    // create pagingData from a list of fake data
+    val pagingData = PagingData.from(fakeData)
+    // pass pagingData containing fake data to a MutableStateFlow
+    val fakeDataFlow = MutableStateFlow(pagingData)
+    // pass flow to composable
+    HsInterviewTheme {
+        Surface {
+            val snackbarHostState = remember { SnackbarHostState() }
+            Scaffold(
+                snackbarHost = { SnackbarHost(snackbarHostState) }
+            ) { paddingValues ->
+                CharacterContent(
+                    characters = fakeDataFlow.collectAsLazyPagingItems(),
+                    modifier = Modifier.padding(paddingValues)
+                )
+                LoadErrorNotification(
+                    snackbarHostState = snackbarHostState,
+                    onRetry = {} // For a preview, the retry action can be empty
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun LoadErrorNotificationPreviewDark() {
     // create list of fake data for preview
     val fakeData = previewCharacters
     // create pagingData from a list of fake data

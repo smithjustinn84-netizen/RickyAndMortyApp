@@ -4,6 +4,7 @@ import ai.revealtech.hsinterview.model.Character
 import ai.revealtech.hsinterview.model.previewCharacter
 import ai.revealtech.hsinterview.ui.previewHandler
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
@@ -58,9 +59,35 @@ fun DetailScreenPreviewPortrait() {
 }
 
 @OptIn(ExperimentalCoilApi::class)
+@Preview(showBackground = true, widthDp = 360, heightDp = 640, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Portrait Dark")
+@Composable
+fun DetailScreenPreviewPortraitDark() {
+    HsInterviewTheme {
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            Surface {
+                DetailContent(character = previewCharacter, onBackClick = {})
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
 @Preview(showBackground = true, widthDp = 640, heightDp = 360)
 @Composable
 fun DetailScreenPreviewLandscape() {
+    HsInterviewTheme {
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            Surface {
+                DetailContent(character = previewCharacter, onBackClick = {})
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview(showBackground = true, widthDp = 640, heightDp = 360, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Landscape Dark")
+@Composable
+fun DetailScreenPreviewLandscapeDark() {
     HsInterviewTheme {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             Surface {

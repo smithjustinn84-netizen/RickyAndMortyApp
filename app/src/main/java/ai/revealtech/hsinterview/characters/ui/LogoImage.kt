@@ -2,8 +2,10 @@ package ai.revealtech.hsinterview.characters.ui
 
 import ai.revealtech.hsinterview.R
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -34,6 +36,18 @@ fun LogoImage(modifier: Modifier = Modifier) {
 @Composable
 fun LogoImagePreview() {
     HsInterviewTheme {
-        LogoImage()
+        Surface {
+            LogoImage()
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun LogoImagePreviewDark() {
+    HsInterviewTheme {
+        Surface {
+            LogoImage()
+        }
     }
 }

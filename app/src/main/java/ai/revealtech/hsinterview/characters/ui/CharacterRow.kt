@@ -5,6 +5,7 @@ import ai.revealtech.hsinterview.model.Character
 import ai.revealtech.hsinterview.model.previewCharacter
 import ai.revealtech.hsinterview.ui.CharacterImage
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -45,7 +46,8 @@ fun CharacterRow(
             )
             .clickable { onClick(character.id) },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        shape = MaterialTheme.shapes.medium
     ) {
         Row(
             modifier = Modifier
@@ -63,6 +65,16 @@ fun CharacterRow(
 @Preview(showBackground = true)
 @Composable
 fun CharacterRowPreview() {
+    HsInterviewTheme {
+        Surface {
+            CharacterRow(character = previewCharacter)
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun CharacterRowDarkPreview() {
     HsInterviewTheme {
         Surface {
             CharacterRow(character = previewCharacter)

@@ -6,6 +6,7 @@ import ai.revealtech.hsinterview.model.previewCharacter
 import ai.revealtech.hsinterview.ui.CharacterImage
 import ai.revealtech.hsinterview.ui.previewHandler
 import ai.revealtech.hsinterview.ui.theme.HsInterviewTheme
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -106,9 +107,35 @@ fun CharacterDetailsPreviewPortrait() {
 }
 
 @OptIn(ExperimentalCoilApi::class)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Portrait Dark")
+@Composable
+fun CharacterDetailsPreviewPortraitDark() {
+    HsInterviewTheme {
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            Surface {
+                CharacterDetails(character = previewCharacter, modifier = Modifier.fillMaxSize())
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
 @Preview(showBackground = true, widthDp = 700, heightDp = 300) // Simulate landscape
 @Composable
 fun CharacterDetailsPreviewLandscape() {
+    HsInterviewTheme {
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            Surface {
+                CharacterDetails(character = previewCharacter, modifier = Modifier.fillMaxSize())
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Preview(showBackground = true, widthDp = 700, heightDp = 300, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Landscape Dark") // Simulate landscape
+@Composable
+fun CharacterDetailsPreviewLandscapeDark() {
     HsInterviewTheme {
         CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
             Surface {

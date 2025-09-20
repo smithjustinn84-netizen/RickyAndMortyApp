@@ -23,9 +23,11 @@ import androidx.compose.ui.unit.dp
  * Composable function that displays the header of the character list screen.
  */
 @Composable
-fun CharacterHeader() {
+fun CharacterHeader(
+    modifier: Modifier = Modifier
+) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         color = MaterialTheme.colorScheme.primary,
         shadowElevation = 4.dp
     ) {
