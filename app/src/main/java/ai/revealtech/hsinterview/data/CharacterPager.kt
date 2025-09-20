@@ -8,6 +8,10 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 
+private const val DEFAULT_PAGE_SIZE = 20
+private const val DEFAULT_PREFETCH_DISTANCE = DEFAULT_PAGE_SIZE
+private const val DEFAULT_INITIAL_LOAD_SIZE = DEFAULT_PAGE_SIZE * 3
+
 /**
  * Creates a [Pager] for [CharacterEntity] objects.
  *
@@ -17,15 +21,25 @@ import androidx.paging.PagingConfig
  * @param appDatabase The [AppDatabase] instance for accessing local data.
  * @param networkDataSource The [NetworkDataSource] for fetching remote data.
  * @param applicationContext The application [Context].
+ * @param pageSize The number of items to load per page.
+ * @param prefetchDistance The distance from the end of the loaded data at which to prefetch more items.
+ * @param initialLoadSize The number of items to load initially.
  * @return A [Pager] for [CharacterEntity] objects.
  */
 @OptIn(ExperimentalPagingApi::class)
 fun pager(
     appDatabase: AppDatabase,
     networkDataSource: NetworkDataSource,
-    applicationContext: Context
+    applicationContext: Context,
+    pageSize: Int = DEFAULT_PAGE_SIZE,
+    prefetchDistance: Int = DEFAULT_PREFETCH_DISTANCE,
+    initialLoadSize: Int = DEFAULT_INITIAL_LOAD_SIZE
 ): Pager<Int, CharacterEntity> = Pager(
-    config = PagingConfig(pageSize = 20),
+    config = PagingConfig(
+        pageSize = pageSize,
+        prefetchDistance = prefetchDistance,
+        initialLoadSize = initialLoadSize
+    ),
     remoteMediator = CharacterRemoteMediator(
         database = appDatabase,
         networkService = networkDataSource,
